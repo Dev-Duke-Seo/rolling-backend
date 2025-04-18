@@ -5,21 +5,17 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.rolling.entity.Recipient;
 import com.rolling.dto.PageResponseDto;
 import com.rolling.dto.RecipientDto;
+import com.rolling.model.entity.Recipient;
 import com.rolling.service.RecipientService;
 
 @RestController
 @RequestMapping("/recipients")
+@RequiredArgsConstructor
 public class RecipientController {
 
     private final RecipientService recipientService;
-
-    @Autowired
-    public RecipientController(RecipientService recipientService) {
-        this.recipientService = recipientService;
-    }
 
     @PostMapping("/")
     public ResponseEntity<RecipientDto> createRecipient(@RequestBody Recipient recipient) {

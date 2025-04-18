@@ -5,7 +5,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.rolling.entity.Reaction;
+import com.rolling.model.entity.Reaction;
 
 import java.util.Optional;
 
