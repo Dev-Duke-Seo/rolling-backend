@@ -8,7 +8,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.rolling.entity.Message;
-import com.rolling.entity.Recipient;
 import com.rolling.dto.MessageDto;
 import com.rolling.dto.PageResponseDto;
 import com.rolling.exception.ResourceNotFoundException;
