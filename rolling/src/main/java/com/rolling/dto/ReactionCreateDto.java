@@ -9,9 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ReactionDto {
-    private Long id;
-    private Long recipientId;
+public class ReactionCreateDto {
     private String emoji;
-    private Integer count;
+    private String type; // "increase" or "decrease"
 }

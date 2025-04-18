@@ -9,9 +9,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ReactionDto {
+public class ReactionPreviewDto {
     private Long id;
-    private Long recipientId;
     private String emoji;
     private Integer count;
 }

@@ -9,9 +9,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ReactionDto {
-    private Long id;
+public class MessageCreateDto {
     private Long recipientId;
-    private String emoji;
-    private Integer count;
+    private String sender;
+    private String profileImageURL;
+    private String backgroundColor;
+    private String relationship;
+    private String content;
+    private String font;
 }
