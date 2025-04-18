@@ -7,12 +7,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import com.rolling.entity.Reaction;
-import com.rolling.entity.Recipient;
 import com.rolling.dto.PageResponseDto;
 import com.rolling.dto.ReactionCreateDto;
 import com.rolling.dto.ReactionDto;
 import com.rolling.exception.ResourceNotFoundException;
+import com.rolling.model.entity.Reaction;
+import com.rolling.model.entity.Recipient;
 import com.rolling.repository.ReactionRepository;
 import com.rolling.repository.RecipientRepository;
 import com.rolling.service.ReactionService;

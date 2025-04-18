@@ -1,8 +1,8 @@
 package com.rolling.service;
 
-import com.rolling.entity.Recipient;
 import com.rolling.dto.PageResponseDto;
 import com.rolling.dto.RecipientDto;
+import com.rolling.model.entity.Recipient;
 
 public interface RecipientService {
     RecipientDto createRecipient(Recipient recipient);

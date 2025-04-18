@@ -1,8 +1,8 @@
 package com.rolling.service;
 
-import com.rolling.entity.Message;
 import com.rolling.dto.MessageDto;
 import com.rolling.dto.PageResponseDto;
+import com.rolling.model.entity.Message;
 
 public interface MessageService {
     MessageDto createMessage(Message message);

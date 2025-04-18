@@ -6,14 +6,14 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.rolling.entity.Message;
-import com.rolling.entity.Reaction;
-import com.rolling.entity.Recipient;
 import com.rolling.dto.MessagePreviewDto;
 import com.rolling.dto.PageResponseDto;
 import com.rolling.dto.ReactionPreviewDto;
 import com.rolling.dto.RecipientDto;
 import com.rolling.exception.ResourceNotFoundException;
+import com.rolling.model.entity.Message;
+import com.rolling.model.entity.Reaction;
+import com.rolling.model.entity.Recipient;
 import com.rolling.repository.RecipientRepository;
 import com.rolling.service.RecipientService;
 

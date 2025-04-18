@@ -7,10 +7,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import com.rolling.entity.Message;
 import com.rolling.dto.MessageDto;
 import com.rolling.dto.PageResponseDto;
 import com.rolling.exception.ResourceNotFoundException;
+import com.rolling.model.entity.Message;
 import com.rolling.repository.MessageRepository;
 import com.rolling.repository.RecipientRepository;
 import com.rolling.service.MessageService;
