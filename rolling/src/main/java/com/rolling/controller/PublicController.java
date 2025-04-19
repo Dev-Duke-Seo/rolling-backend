@@ -26,10 +26,11 @@ public class PublicController {
         ServiceResult serviceResult = publicService.getBackgroundImage();
 
         if (!serviceResult.isSuccess()) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(serviceResult.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(serviceResult.getMessage());
         }
 
-        return ResponseEntity.ok(serviceResult.getData());
+        return ResponseEntity.ok(serviceResult.getDataOrNull());
     }
 
     @GetMapping("/profile-images/")
