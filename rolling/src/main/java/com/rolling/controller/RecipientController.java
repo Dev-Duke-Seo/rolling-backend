@@ -7,8 +7,10 @@ import org.springframework.web.bind.annotation.*;
 
 import com.rolling.dto.PageResponseDto;
 import com.rolling.dto.RecipientDto;
+import com.rolling.model.ServiceResult;
 import com.rolling.model.entity.Recipient;
 import com.rolling.service.RecipientService;
+import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/recipients")
@@ -19,22 +21,38 @@ public class RecipientController {
 
     @PostMapping("/")
     public ResponseEntity<RecipientDto> createRecipient(@RequestBody Recipient recipient) {
-        RecipientDto createdRecipient = recipientService.createRecipient(recipient);
-        return new ResponseEntity<>(createdRecipient, HttpStatus.CREATED);
+        ServiceResult<RecipientDto> result = recipientService.createRecipient(recipient);
+
+        if (!result.isSuccess()) {
+            return ResponseEntity.status(result.getStatus()).body(result.getDataOrNull());
+        }
+
+        return ResponseEntity.status(result.getStatus()).body(result.getDataOrNull());
     }
 
     @GetMapping("/{id}/")
     public ResponseEntity<RecipientDto> getRecipientById(@PathVariable Long id) {
-        RecipientDto recipient = recipientService.getRecipientById(id);
-        return ResponseEntity.ok(recipient);
+        ServiceResult<RecipientDto> result = recipientService.getRecipientById(id);
+
+        if (!result.isSuccess()) {
+            return ResponseEntity.status(result.getStatus()).body(result.getDataOrNull());
+        }
+
+        return ResponseEntity.status(result.getStatus()).body(result.getDataOrNull());
     }
 
     @GetMapping("/")
     public ResponseEntity<PageResponseDto<RecipientDto>> getAllRecipients(
             @RequestParam(defaultValue = "8") int limit,
             @RequestParam(defaultValue = "0") int offset) {
-        PageResponseDto<RecipientDto> recipients = recipientService.getAllRecipients(limit, offset);
-        return ResponseEntity.ok(recipients);
+        ServiceResult<PageResponseDto<RecipientDto>> result =
+                recipientService.getAllRecipients(limit, offset);
+
+        if (!result.isSuccess()) {
+            return ResponseEntity.status(result.getStatus()).body(result.getDataOrNull());
+        }
+
+        return ResponseEntity.status(result.getStatus()).body(result.getDataOrNull());
     }
 
     @DeleteMapping("/{id}/")
