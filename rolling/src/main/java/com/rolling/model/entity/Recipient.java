@@ -25,13 +25,10 @@ public class Recipient {
     @Column(nullable = false)
     private String name;
 
-    @Column(name = "background_color")
     private String backgroundColor;
 
-    @Column(name = "background_image_url")
     private String backgroundImageURL;
 
-    @Column(name = "created_at")
     private LocalDateTime createdAt;
 
     @OneToMany(mappedBy = "recipient", cascade = CascadeType.ALL, orphanRemoval = true)
