@@ -14,7 +14,7 @@ import java.util.Arrays;
 @Service
 public class PublicServiceImpl implements PublicService {
     @Override
-    public ServiceResult getBackgroundImage() {
+    public ServiceResult<Object> getBackgroundImage() {
         Map<String, Object> data = new HashMap<>();
         List<String> imageUrls = Arrays.asList("https://picsum.photos/id/683/3840/2160",
                 "https://picsum.photos/id/24/3840/2160", "https://picsum.photos/id/599/3840/2160",
@@ -22,11 +22,13 @@ public class PublicServiceImpl implements PublicService {
 
         data.put("imageUrls", imageUrls);
 
+        System.out.println(data);
+
         return ServiceResult.success("Background image fetched successfully", data);
     }
 
     @Override
-    public ServiceResult getProfileImage() {
+    public ServiceResult<Object> getProfileImage() {
         Map<String, Object> data = new HashMap<>();
         List<String> imageUrls = Arrays.asList(
                 "https://learn-codeit-kr-static.s3.ap-northeast-2.amazonaws.com/sprint-proj-image/default_avatar.png",

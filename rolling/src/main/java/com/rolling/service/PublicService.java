@@ -4,8 +4,8 @@ import com.rolling.model.ServiceResult;
 
 public interface PublicService {
 
-    ServiceResult getBackgroundImage();
+    ServiceResult<Object> getBackgroundImage();
 
-    ServiceResult getProfileImage();
+    ServiceResult<Object> getProfileImage();
 
 }
