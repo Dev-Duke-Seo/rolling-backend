@@ -1,4 +1,4 @@
-package com.rolling.dto;
+package com.rolling.model.dto.Recipient;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import com.rolling.model.dto.MessagePreviewDto;
+import com.rolling.model.dto.ReactionPreviewDto;
 
 @Data
 @NoArgsConstructor
@@ -24,12 +26,3 @@ public class RecipientDto {
     private List<ReactionPreviewDto> topReactions;
 }
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
-class RecipientCreateDto {
-    private String name;
-    private String backgroundColor;
-    private String backgroundImageURL;
-}

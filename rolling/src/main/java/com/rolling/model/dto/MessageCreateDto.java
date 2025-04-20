@@ -1,4 +1,4 @@
-package com.rolling.dto;
+package com.rolling.model.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

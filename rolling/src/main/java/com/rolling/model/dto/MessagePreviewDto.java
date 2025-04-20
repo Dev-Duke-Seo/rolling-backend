@@ -1,4 +1,4 @@
-package com.rolling.dto;
+package com.rolling.model.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,14 +11,11 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class MessageDto {
+public class MessagePreviewDto {
     private Long id;
-    private Long recipientId;
     private String sender;
-    private String profileImageURL;
-    private String backgroundColor;
-    private String relationship;
     private String content;
-    private String font;
     private LocalDateTime createdAt;
+    private String profileImageURL;
+    private String relationship;
 }

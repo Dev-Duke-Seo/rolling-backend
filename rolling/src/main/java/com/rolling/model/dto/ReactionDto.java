@@ -1,4 +1,4 @@
-package com.rolling.dto;
+package com.rolling.model.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +9,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ReactionCreateDto {
+public class ReactionDto {
+    private Long id;
+    private Long recipientId;
     private String emoji;
-    private String type; // "increase" or "decrease"
+    private Integer count;
 }
