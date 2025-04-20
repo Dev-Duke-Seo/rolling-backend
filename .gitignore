@@ -2,3 +2,8 @@
 .vscode/launch.json
 rolling/src/main/java/com/rolling/rolling-backend.code-workspace
 rolling/src/main/java/com/rolling/rolling-backend.code-workspace
+data/rolling_db.lock.db
+data/rolling_db.mv.db
+data/rolling_db.trace.db
+rolling/data/rolling_db.mv.db
+rolling/data/rolling_db.trace.db
