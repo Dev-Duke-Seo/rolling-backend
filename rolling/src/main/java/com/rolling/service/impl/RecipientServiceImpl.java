@@ -6,15 +6,17 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import com.rolling.dto.MessagePreviewDto;
-import com.rolling.dto.PageResponseDto;
-import com.rolling.dto.ReactionPreviewDto;
-import com.rolling.dto.RecipientDto;
 import com.rolling.exception.ResourceNotFoundException;
 import com.rolling.model.ServiceResult;
+import com.rolling.model.dto.MessagePreviewDto;
+import com.rolling.model.dto.PageResponseDto;
+import com.rolling.model.dto.ReactionPreviewDto;
+import com.rolling.model.dto.Recipient.RecipientCreateDto;
+import com.rolling.model.dto.Recipient.RecipientDto;
 import com.rolling.model.entity.Message;
 import com.rolling.model.entity.Reaction;
 import com.rolling.model.entity.Recipient;
+import com.rolling.model.enums.ColorType;
 import com.rolling.repository.RecipientRepository;
 import com.rolling.service.RecipientService;
 import lombok.RequiredArgsConstructor;
@@ -28,11 +30,14 @@ public class RecipientServiceImpl implements RecipientService {
 
         private final RecipientRepository recipientRepository;
 
-
         @Override
         @Transactional
-        public ServiceResult<RecipientDto> createRecipient(Recipient recipient) {
-                Recipient savedRecipient = recipientRepository.save(recipient);
+        public ServiceResult<RecipientDto> createRecipient(RecipientCreateDto recipient) {
+                Recipient entity = Recipient.builder().name(recipient.getName())
+                                .backgroundColor(
+                                                ColorType.fromValue(recipient.getBackgroundColor()))
+                                .backgroundImageURL(recipient.getBackgroundImageURL()).build();
+                Recipient savedRecipient = recipientRepository.save(entity);
 
                 return ServiceResult.success("Recipient created successfully",
                                 toDto(savedRecipient), HttpStatus.CREATED);
@@ -43,9 +48,10 @@ public class RecipientServiceImpl implements RecipientService {
                 Recipient recipient = recipientRepository.findById(id)
                                 .orElseThrow(() -> new ResourceNotFoundException(
                                                 "Recipient not found with id: " + id));
-                return ServiceResult.<RecipientDto>builder().isSuccess(true)
-                                .message("Recipient found successfully").data(toDto(recipient))
-                                .build();
+                System.out.println("recipient: " + recipient);
+
+                return ServiceResult.success("Recipient found successfully", toDto(recipient),
+                                HttpStatus.OK);
         }
 
         @Override
@@ -105,7 +111,7 @@ public class RecipientServiceImpl implements RecipientService {
                                                 .collect(Collectors.toList());
 
                 return RecipientDto.builder().id(recipient.getId()).name(recipient.getName())
-                                .backgroundColor(recipient.getBackgroundColor())
+                                .backgroundColor(String.valueOf(recipient.getBackgroundColor()))
                                 .backgroundImageURL(recipient.getBackgroundImageURL())
                                 .createdAt(recipient.getCreatedAt())
                                 .messageCount(recipient.getMessages().size())

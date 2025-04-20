@@ -1,16 +1,17 @@
 package com.rolling.service;
 
-import com.rolling.dto.PageResponseDto;
-import com.rolling.dto.RecipientDto;
 import com.rolling.model.ServiceResult;
-import com.rolling.model.entity.Recipient;
+import com.rolling.model.dto.PageResponseDto;
+import com.rolling.model.dto.Recipient.RecipientCreateDto;
+import com.rolling.model.dto.Recipient.RecipientDto;
 
 public interface RecipientService {
-    ServiceResult<RecipientDto> createRecipient(Recipient recipient);
+    ServiceResult<RecipientDto> createRecipient(RecipientCreateDto recipient);
 
     ServiceResult<RecipientDto> getRecipientById(Long id);
 
     ServiceResult<PageResponseDto<RecipientDto>> getAllRecipients(int limit, int offset);
 
     ServiceResult<Void> deleteRecipient(Long id);
+
 }
