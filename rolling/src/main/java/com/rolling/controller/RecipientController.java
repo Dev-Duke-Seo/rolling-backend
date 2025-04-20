@@ -1,15 +1,15 @@
 package com.rolling.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import com.rolling.dto.PageResponseDto;
-import com.rolling.dto.RecipientDto;
 import com.rolling.model.ServiceResult;
-import com.rolling.model.entity.Recipient;
+import com.rolling.model.dto.MessageDto;
+import com.rolling.model.dto.PageResponseDto;
+import com.rolling.model.dto.Recipient.RecipientCreateDto;
+import com.rolling.model.dto.Recipient.RecipientDto;
+import com.rolling.model.entity.Message;
 import com.rolling.service.RecipientService;
+import com.rolling.service.MessageService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -18,20 +18,27 @@ import lombok.RequiredArgsConstructor;
 public class RecipientController {
 
     private final RecipientService recipientService;
+    private final MessageService messageService;
 
     @PostMapping("/")
-    public ResponseEntity<RecipientDto> createRecipient(@RequestBody Recipient recipient) {
+    public ResponseEntity<RecipientDto> createRecipient(@RequestBody RecipientCreateDto recipient) {
+        System.out.println("recipient: " + recipient);
         ServiceResult<RecipientDto> result = recipientService.createRecipient(recipient);
 
-        if (!result.isSuccess()) {
-            return ResponseEntity.status(result.getStatus()).body(result.getDataOrNull());
-        }
+        return ResponseEntity.status(result.getStatus()).body(result.getDataOrNull());
+    }
+
+    @PostMapping("/{id}/messages/")
+    public ResponseEntity<MessageDto> createMessage(@PathVariable("id") Long id,
+            @RequestBody Message message) {
+
+        ServiceResult<MessageDto> result = messageService.createMessage(message, id);
 
         return ResponseEntity.status(result.getStatus()).body(result.getDataOrNull());
     }
 
     @GetMapping("/{id}/")
-    public ResponseEntity<RecipientDto> getRecipientById(@PathVariable Long id) {
+    public ResponseEntity<RecipientDto> getRecipientById(@PathVariable("id") Long id) {
         ServiceResult<RecipientDto> result = recipientService.getRecipientById(id);
 
         if (!result.isSuccess()) {
@@ -45,6 +52,7 @@ public class RecipientController {
     public ResponseEntity<PageResponseDto<RecipientDto>> getAllRecipients(
             @RequestParam(defaultValue = "8") int limit,
             @RequestParam(defaultValue = "0") int offset) {
+        System.out.println("limit: " + limit);
         ServiceResult<PageResponseDto<RecipientDto>> result =
                 recipientService.getAllRecipients(limit, offset);
 

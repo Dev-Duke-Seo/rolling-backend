@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import com.rolling.model.enums.ColorType;
 
 @Entity
 @Table(name = "recipients")
@@ -25,16 +26,23 @@ public class Recipient {
     @Column(nullable = false)
     private String name;
 
-    private String backgroundColor;
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private ColorType backgroundColor;
 
+    @Column(nullable = true)
     private String backgroundImageURL;
 
     private LocalDateTime createdAt;
 
-    @OneToMany(mappedBy = "recipient", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "recipient", cascade = CascadeType.ALL, orphanRemoval = true,
+            fetch = FetchType.LAZY)
+    @Builder.Default
     private List<Message> messages = new ArrayList<>();
 
-    @OneToMany(mappedBy = "recipient", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "recipient", cascade = CascadeType.ALL, orphanRemoval = true,
+            fetch = FetchType.LAZY)
+    @Builder.Default
     private List<Reaction> reactions = new ArrayList<>();
 
     @PrePersist
