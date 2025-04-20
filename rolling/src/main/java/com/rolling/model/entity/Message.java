@@ -27,10 +27,10 @@ public class Message {
     @Column(nullable = false)
     private String sender;
 
-    @Column(name = "profile_image_url")
+    @Column(name = "profile_image_url", nullable = true)
     private String profileImageURL;
 
-    @Column(name = "background_color")
+    @Column(name = "background_color", nullable = false)
     private String backgroundColor;
 
     @Column(nullable = false)
@@ -39,7 +39,7 @@ public class Message {
     @Column(nullable = false, columnDefinition = "TEXT")
     private String content;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String font;
 
     @Column(name = "created_at")

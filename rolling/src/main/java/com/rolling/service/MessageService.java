@@ -1,17 +1,18 @@
 package com.rolling.service;
 
-import com.rolling.dto.MessageDto;
-import com.rolling.dto.PageResponseDto;
+import com.rolling.model.ServiceResult;
+import com.rolling.model.dto.MessageDto;
+import com.rolling.model.dto.PageResponseDto;
 import com.rolling.model.entity.Message;
 
 public interface MessageService {
-    MessageDto createMessage(Message message);
+    ServiceResult<MessageDto> createMessage(Message message, Long recipientId);
 
-    MessageDto getMessageById(Long id);
+    ServiceResult<MessageDto> getMessageById(Long id);
 
     PageResponseDto<MessageDto> getMessagesByRecipientId(Long recipientId, int limit, int offset);
 
-    MessageDto updateMessage(Long id, Message messageDetails);
+    ServiceResult<MessageDto> updateMessage(Long id, Message messageDetails);
 
-    void deleteMessage(Long id);
+    ServiceResult<Void> deleteMessage(Long id);
 }

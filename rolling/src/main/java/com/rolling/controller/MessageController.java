@@ -1,52 +1,44 @@
 package com.rolling.controller;
 
-import com.rolling.dto.MessageDto;
-import com.rolling.dto.PageResponseDto;
-import com.rolling.repository.RecipientRepository;
 import com.rolling.service.MessageService;
 import lombok.RequiredArgsConstructor;
 import com.rolling.exception.ResourceNotFoundException;
+import com.rolling.model.ServiceResult;
+import com.rolling.model.dto.MessageDto;
+import com.rolling.model.dto.PageResponseDto;
 import com.rolling.model.entity.Message;
-import com.rolling.model.entity.Recipient;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/recipients/{recipientId}/messages")
+@RequestMapping("/me/{recipientId}/messages")
 @RequiredArgsConstructor
 public class MessageController {
 
     private final MessageService messageService;
-    private final RecipientRepository recipientRepository;
 
     @PostMapping("/")
     public ResponseEntity<MessageDto> createMessage(@PathVariable Long recipientId,
             @RequestBody Message messageRequest) {
 
-        Recipient recipient = recipientRepository.findById(recipientId).orElseThrow(
-                () -> new ResourceNotFoundException("Recipient not found with id: " + recipientId));
-
-        Message message = messageRequest;
-        message.setRecipient(recipient);
-
-        MessageDto createdMessage = messageService.createMessage(message);
-        return new ResponseEntity<>(createdMessage, HttpStatus.CREATED);
+        ServiceResult<MessageDto> createdMessage = messageService.createMessage(messageRequest);
+        return new ResponseEntity<>(createdMessage.getDataOrNull(), HttpStatus.CREATED);
     }
 
     @GetMapping("/{messageId}/")
     public ResponseEntity<MessageDto> getMessageById(@PathVariable Long recipientId,
             @PathVariable Long messageId) {
 
-        MessageDto message = messageService.getMessageById(messageId);
+        ServiceResult<MessageDto> message = messageService.getMessageById(messageId);
 
-        if (!message.getRecipientId().equals(recipientId)) {
+        if (!message.getDataOrNull().getRecipientId().equals(recipientId)) {
             throw new ResourceNotFoundException(
                     "Message not found with id " + messageId + " for recipient id " + recipientId);
         }
 
-        return ResponseEntity.ok(message);
+        return ResponseEntity.ok(message.getDataOrNull());
     }
 
     @GetMapping("/")
@@ -63,15 +55,16 @@ public class MessageController {
     public ResponseEntity<MessageDto> updateMessage(@PathVariable Long recipientId,
             @PathVariable Long messageId, @RequestBody Message messageDetails) {
 
-        MessageDto existingMessage = messageService.getMessageById(messageId);
+        ServiceResult<MessageDto> existingMessage = messageService.getMessageById(messageId);
 
-        if (!existingMessage.getRecipientId().equals(recipientId)) {
+        if (!existingMessage.getDataOrNull().getRecipientId().equals(recipientId)) {
             throw new ResourceNotFoundException(
                     "Message not found with id " + messageId + " for recipient id " + recipientId);
         }
 
-        MessageDto updatedMessage = messageService.updateMessage(messageId, messageDetails);
-        return ResponseEntity.ok(updatedMessage);
+        ServiceResult<MessageDto> updatedMessage =
+                messageService.updateMessage(messageId, messageDetails);
+        return ResponseEntity.ok(updatedMessage.getDataOrNull());
     }
 
     @PatchMapping("/{messageId}/")
@@ -86,9 +79,9 @@ public class MessageController {
     public ResponseEntity<Void> deleteMessage(@PathVariable Long recipientId,
             @PathVariable Long messageId) {
 
-        MessageDto message = messageService.getMessageById(messageId);
+        ServiceResult<MessageDto> message = messageService.getMessageById(messageId);
 
-        if (!message.getRecipientId().equals(recipientId)) {
+        if (!message.getDataOrNull().getRecipientId().equals(recipientId)) {
             throw new ResourceNotFoundException(
                     "Message not found with id " + messageId + " for recipient id " + recipientId);
         }
