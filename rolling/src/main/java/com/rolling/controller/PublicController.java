@@ -14,7 +14,7 @@ import com.rolling.service.PublicService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/")
+@RequestMapping("/public")
 @RequiredArgsConstructor
 public class PublicController {
 

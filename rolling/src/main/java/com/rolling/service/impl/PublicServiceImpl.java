@@ -22,8 +22,6 @@ public class PublicServiceImpl implements PublicService {
 
         data.put("imageUrls", imageUrls);
 
-        System.out.println(data);
-
         return ServiceResult.success("Background image fetched successfully", data);
     }
 
