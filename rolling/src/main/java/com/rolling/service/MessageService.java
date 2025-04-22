@@ -10,7 +10,8 @@ public interface MessageService {
 
     ServiceResult<MessageDto> getMessageById(Long id);
 
-    PageResponseDto<MessageDto> getMessagesByRecipientId(Long recipientId, int limit, int offset);
+    ServiceResult<PageResponseDto<MessageDto>> getMessagesByRecipientId(Long recipientId, int limit,
+            int offset);
 
     ServiceResult<MessageDto> updateMessage(Long id, Message messageDetails);
 

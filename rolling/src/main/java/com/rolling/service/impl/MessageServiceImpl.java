@@ -25,6 +25,7 @@ public class MessageServiceImpl implements MessageService {
     private final MessageRepository messageRepository;
     private final RecipientRepository recipientRepository;
 
+    //
     @Override
     public ServiceResult<MessageDto> createMessage(Message message, Long recipientId) {
         Recipient recipient = recipientRepository.findById(recipientId).orElseThrow(
@@ -34,6 +35,7 @@ public class MessageServiceImpl implements MessageService {
         return ServiceResult.success(convertToDto(savedMessage));
     }
 
+    //
     @Override
     public ServiceResult<MessageDto> getMessageById(Long id) {
         Message message = messageRepository.findById(id).orElseThrow(
@@ -41,54 +43,58 @@ public class MessageServiceImpl implements MessageService {
         return ServiceResult.success(convertToDto(message));
     }
 
+    //
     @Override
-    public PageResponseDto<MessageDto> getMessagesByRecipientId(Long recipientId, int limit,
-            int offset) {
+    public ServiceResult<PageResponseDto<MessageDto>> getMessagesByRecipientId(Long recipientId,
+            int limit, int offset) {
         // 순환 참조가 없는지 확인
         if (!recipientRepository.existsById(recipientId)) {
             throw new ResourceNotFoundException("Recipient not found with id: " + recipientId);
         }
-
+        //
         Pageable pageable =
                 PageRequest.of(offset / limit, limit, Sort.by(Sort.Direction.DESC, "createdAt"));
         Page<Message> messagesPage = messageRepository.findByRecipientId(recipientId, pageable);
-
+        //
         List<MessageDto> messages = messagesPage.getContent().stream().map(this::convertToDto)
                 .collect(Collectors.toList());
-
+        //
         String nextUrl = null;
         String prevUrl = null;
-
+        //
         if (messagesPage.hasNext()) {
             nextUrl = "/recipients/" + recipientId + "/messages/?limit=" + limit + "&offset="
                     + (offset + limit);
         }
-
+        //
         if (offset > 0) {
             prevUrl = "/recipients/" + recipientId + "/messages/?limit=" + limit + "&offset="
                     + Math.max(0, offset - limit);
         }
-
-        return PageResponseDto.<MessageDto>builder().count((int) messagesPage.getTotalElements())
-                .next(nextUrl).previous(prevUrl).results(messages).build();
+        //
+        return ServiceResult.success(
+                PageResponseDto.<MessageDto>builder().count((int) messagesPage.getTotalElements())
+                        .next(nextUrl).previous(prevUrl).results(messages).build());
     }
 
+    //
     @Override
     public ServiceResult<MessageDto> updateMessage(Long id, Message messageDetails) {
         Message message = messageRepository.findById(id).orElseThrow(
                 () -> new ResourceNotFoundException("Message not found with id: " + id));
-
+        //
         message.setSender(messageDetails.getSender());
         message.setProfileImageURL(messageDetails.getProfileImageURL());
         message.setBackgroundColor(messageDetails.getBackgroundColor());
         message.setRelationship(messageDetails.getRelationship());
         message.setContent(messageDetails.getContent());
         message.setFont(messageDetails.getFont());
-
+        //
         Message updatedMessage = messageRepository.save(message);
         return ServiceResult.success(convertToDto(updatedMessage));
     }
 
+    //
     @Override
     public ServiceResult<Void> deleteMessage(Long id) {
         Message message = messageRepository.findById(id).orElseThrow(
@@ -97,6 +103,7 @@ public class MessageServiceImpl implements MessageService {
         return ServiceResult.success(null);
     }
 
+    //
     private MessageDto convertToDto(Message message) {
         return MessageDto.builder().id(message.getId()).recipientId(message.getRecipient().getId())
                 .sender(message.getSender()).profileImageURL(message.getProfileImageURL())
