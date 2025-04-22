@@ -16,7 +16,6 @@ import com.rolling.model.dto.Recipient.RecipientDto;
 import com.rolling.model.entity.Message;
 import com.rolling.model.entity.Reaction;
 import com.rolling.model.entity.Recipient;
-import com.rolling.model.enums.ColorType;
 import com.rolling.repository.RecipientRepository;
 import com.rolling.service.RecipientService;
 import lombok.RequiredArgsConstructor;
@@ -33,10 +32,17 @@ public class RecipientServiceImpl implements RecipientService {
         @Override
         @Transactional
         public ServiceResult<RecipientDto> createRecipient(RecipientCreateDto recipient) {
-                Recipient entity = Recipient.builder().name(recipient.getName())
-                                .backgroundColor(
-                                                ColorType.fromValue(recipient.getBackgroundColor()))
-                                .backgroundImageURL(recipient.getBackgroundImageURL()).build();
+
+                // 첫번째를 찾아서 가져옴
+                Recipient existingRecipient = recipientRepository
+                                .findFirstByName(recipient.getName()).orElse(null);
+
+                if (existingRecipient != null) {
+                        return ServiceResult.success("Recipient already exists",
+                                        toDto(existingRecipient), HttpStatus.OK);
+                }
+
+                Recipient entity = Recipient.fromDto(recipient);
                 Recipient savedRecipient = recipientRepository.save(entity);
 
                 return ServiceResult.success("Recipient created successfully",
@@ -105,19 +111,18 @@ public class RecipientServiceImpl implements RecipientService {
                 List<Reaction> topReactions = recipient.getReactions().stream()
                                 .sorted(Comparator.comparing(Reaction::getCount).reversed())
                                 .limit(3).collect(Collectors.toList());
-
                 List<ReactionPreviewDto> reactionPreviewDtos =
                                 topReactions.stream().map(this::convertToReactionPreviewDto)
                                                 .collect(Collectors.toList());
 
                 return RecipientDto.builder().id(recipient.getId()).name(recipient.getName())
-                                .backgroundColor(String.valueOf(recipient.getBackgroundColor()))
+                                .backgroundColor(recipient.getBackgroundColor().getValue())
                                 .backgroundImageURL(recipient.getBackgroundImageURL())
                                 .createdAt(recipient.getCreatedAt())
                                 .messageCount(recipient.getMessages().size())
-                                .recentMessages(messagePreviewDtos)
                                 .reactionCount(recipient.getReactions().stream()
                                                 .mapToInt(Reaction::getCount).sum())
+                                .recentMessages(messagePreviewDtos)
                                 .topReactions(reactionPreviewDtos).build();
         }
 

@@ -10,4 +10,6 @@ import com.rolling.model.entity.Recipient;
 public interface RecipientRepository extends JpaRepository<Recipient, Long> {
 
     Optional<Recipient> findById(Long id);
+
+    Optional<Recipient> findFirstByName(String name);
 }
