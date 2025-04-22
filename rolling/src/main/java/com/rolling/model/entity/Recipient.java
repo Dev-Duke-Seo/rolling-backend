@@ -5,11 +5,13 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
+import lombok.ToString;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import com.rolling.model.dto.Recipient.RecipientCreateDto;
 import com.rolling.model.enums.ColorType;
+import com.rolling.model.enums.ColorTypeConverter;
 
 @Entity
 @Table(name = "recipients")
@@ -27,7 +29,7 @@ public class Recipient {
     private String name;
 
     @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
+    @Convert(converter = ColorTypeConverter.class)
     private ColorType backgroundColor;
 
     @Column(nullable = true)
@@ -38,15 +40,28 @@ public class Recipient {
     @OneToMany(mappedBy = "recipient", cascade = CascadeType.ALL, orphanRemoval = true,
             fetch = FetchType.LAZY)
     @Builder.Default
+    @ToString.Exclude
     private List<Message> messages = new ArrayList<>();
 
     @OneToMany(mappedBy = "recipient", cascade = CascadeType.ALL, orphanRemoval = true,
             fetch = FetchType.LAZY)
     @Builder.Default
+    @ToString.Exclude
     private List<Reaction> reactions = new ArrayList<>();
 
     @PrePersist
     protected void onCreate() {
         createdAt = LocalDateTime.now();
+    }
+
+
+    public static Recipient fromDto(RecipientCreateDto recipientDto) {
+        ColorType colorType = ColorType.fromValue(recipientDto.getBackgroundColor());
+
+        Recipient recipient = new Recipient();
+        recipient.name = recipientDto.getName();
+        recipient.backgroundColor = colorType;
+        recipient.backgroundImageURL = recipientDto.getBackgroundImageURL();
+        return recipient;
     }
 }
