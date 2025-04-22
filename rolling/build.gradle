@@ -42,6 +42,9 @@ dependencies {
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 	testImplementation 'org.junit.platform:junit-platform-suite:1.9.3'
 	testImplementation 'org.junit.platform:junit-platform-suite-api:1.9.3'
+
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
 }
 
 tasks.named('test') {
@@ -52,4 +55,8 @@ tasks.named('test') {
 tasks.named('asciidoctor') {
 	inputs.dir snippetsDir
 	dependsOn test
+}
+
+compileJava {
+	options.compilerArgs += '-parameters'
 }
