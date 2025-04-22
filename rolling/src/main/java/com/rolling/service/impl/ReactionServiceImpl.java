@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import com.rolling.exception.ResourceNotFoundException;
+import com.rolling.model.ServiceResult;
 import com.rolling.model.dto.PageResponseDto;
 import com.rolling.model.dto.ReactionCreateDto;
 import com.rolling.model.dto.ReactionDto;
@@ -19,7 +20,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-// @Service
+@Service
 @RequiredArgsConstructor
 public class ReactionServiceImpl implements ReactionService {
 
@@ -27,7 +28,8 @@ public class ReactionServiceImpl implements ReactionService {
     private final RecipientRepository recipientRepository;
 
     @Override
-    public ReactionDto addReaction(Long recipientId, ReactionCreateDto reactionCreateDto) {
+    public ServiceResult<ReactionDto> addReaction(Long recipientId,
+            ReactionCreateDto reactionCreateDto) {
         Recipient recipient = recipientRepository.findById(recipientId).orElseThrow(
                 () -> new ResourceNotFoundException("Recipient not found with id: " + recipientId));
 
@@ -50,12 +52,13 @@ public class ReactionServiceImpl implements ReactionService {
         }
 
         Reaction savedReaction = reactionRepository.save(reaction);
-        return convertToDto(savedReaction);
+        return ServiceResult.<ReactionDto>builder().isSuccess(true)
+                .message("Reaction added successfully").data(convertToDto(savedReaction)).build();
     }
 
     @Override
-    public PageResponseDto<ReactionDto> getReactionsByRecipientId(Long recipientId, int limit,
-            int offset) {
+    public ServiceResult<PageResponseDto<ReactionDto>> getReactionsByRecipientId(Long recipientId,
+            int limit, int offset) {
         if (!recipientRepository.existsById(recipientId)) {
             throw new ResourceNotFoundException("Recipient not found with id: " + recipientId);
         }
@@ -80,8 +83,12 @@ public class ReactionServiceImpl implements ReactionService {
                     + Math.max(0, offset - limit);
         }
 
-        return PageResponseDto.<ReactionDto>builder().count((int) reactionsPage.getTotalElements())
-                .next(nextUrl).previous(prevUrl).results(reactions).build();
+        return ServiceResult.<PageResponseDto<ReactionDto>>builder().isSuccess(true)
+                .message("Reactions fetched successfully")
+                .data(PageResponseDto.<ReactionDto>builder()
+                        .count((int) reactionsPage.getTotalElements()).next(nextUrl)
+                        .previous(prevUrl).results(reactions).build())
+                .build();
     }
 
     private ReactionDto convertToDto(Reaction reaction) {
