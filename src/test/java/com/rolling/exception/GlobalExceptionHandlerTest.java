@@ -32,12 +32,14 @@ public class GlobalExceptionHandlerTest {
     void resourceNotFoundException_ShouldReturnNotFoundStatus() {
         ResourceNotFoundException ex = new ResourceNotFoundException("Resource not found");
 
-        ResponseEntity<?> responseEntity = globalExceptionHandler.resourceNotFoundException(ex, webRequest);
+        ResponseEntity<?> responseEntity =
+                globalExceptionHandler.resourceNotFoundException(ex, webRequest);
 
         assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
         assertNotNull(responseEntity.getBody());
 
         ErrorDetails errorDetails = (ErrorDetails) responseEntity.getBody();
+        assertNotNull(errorDetails);
         assertEquals("Resource not found", errorDetails.getMessage());
         assertEquals("test-description", errorDetails.getDetails());
         assertNotNull(errorDetails.getTimestamp());
@@ -47,12 +49,14 @@ public class GlobalExceptionHandlerTest {
     void noHandlerFoundException_ShouldReturnNotFoundStatus() {
         NoHandlerFoundException ex = new NoHandlerFoundException("GET", "/not-found", null);
 
-        ResponseEntity<?> responseEntity = globalExceptionHandler.noHandlerFoundException(ex, webRequest);
+        ResponseEntity<?> responseEntity =
+                globalExceptionHandler.noHandlerFoundException(ex, webRequest);
 
         assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
         assertNotNull(responseEntity.getBody());
 
         ErrorDetails errorDetails = (ErrorDetails) responseEntity.getBody();
+        assertNotNull(errorDetails);
         assertEquals("요청한 리소스를 찾을 수 없습니다: /not-found", errorDetails.getMessage());
         assertEquals("test-description", errorDetails.getDetails());
         assertNotNull(errorDetails.getTimestamp());
@@ -62,12 +66,14 @@ public class GlobalExceptionHandlerTest {
     void globalExceptionHandler_ShouldReturnInternalServerErrorStatus() {
         Exception ex = new RuntimeException("Internal server error");
 
-        ResponseEntity<?> responseEntity = globalExceptionHandler.globalExceptionHandler(ex, webRequest);
+        ResponseEntity<?> responseEntity =
+                globalExceptionHandler.globalExceptionHandler(ex, webRequest);
 
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
         assertNotNull(responseEntity.getBody());
 
         ErrorDetails errorDetails = (ErrorDetails) responseEntity.getBody();
+        assertNotNull(errorDetails);
         assertEquals("Internal server error", errorDetails.getMessage());
         assertEquals("test-description", errorDetails.getDetails());
         assertNotNull(errorDetails.getTimestamp());
