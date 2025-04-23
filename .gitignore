@@ -1,9 +1,40 @@
+HELP.md
+.gradle
+build/
+!gradle/wrapper/gradle-wrapper.jar
+!**/src/main/**/build/
+!**/src/test/**/build/
 
-.vscode/launch.json
-rolling/src/main/java/com/rolling/rolling-backend.code-workspace
-rolling/src/main/java/com/rolling/rolling-backend.code-workspace
-data/rolling_db.lock.db
-data/rolling_db.mv.db
-data/rolling_db.trace.db
-rolling/data/rolling_db.mv.db
-rolling/data/rolling_db.trace.db
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+bin/
+!**/src/main/**/bin/
+!**/src/test/**/bin/
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+out/
+!**/src/main/**/out/
+!**/src/test/**/out/
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+### VS Code ###
+.vscode/
+
+### NOT_USED_BUT_KEEP ###
+src/main/java/com/rolling/TBD/
