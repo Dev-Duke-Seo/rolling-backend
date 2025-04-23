@@ -23,7 +23,7 @@ public class PublicController {
     @GetMapping("/background-images/")
     public ResponseEntity<Object> getBackgroundImage() {
 
-        ServiceResult serviceResult = publicService.getBackgroundImage();
+        ServiceResult<Object> serviceResult = publicService.getBackgroundImage();
 
         if (!serviceResult.isSuccess()) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -35,7 +35,7 @@ public class PublicController {
 
     @GetMapping("/profile-images/")
     public ResponseEntity<Object> getProfileImage() {
-        ServiceResult serviceResult = publicService.getProfileImage();
+        ServiceResult<Object> serviceResult = publicService.getProfileImage();
 
         return ResponseEntity.ok(serviceResult.getData());
     }
