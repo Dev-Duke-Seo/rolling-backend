@@ -171,6 +171,21 @@ public class RecipientController {
                 return ResponseEntity.status(result.getStatus()).body(result.getDataOrNull());
         }
 
+        @Operation(summary = "메시지 삭제", description = "특정 메시지를 삭제합니다.")
+        @ApiResponses(value = {
+                        @ApiResponse(responseCode = "204", description = "성공적으로 삭제됨",
+                                        content = @Content),
+                        @ApiResponse(responseCode = "404", description = "Recipient를 찾을 수 없음",
+                                        content = @Content),
+                        @ApiResponse(responseCode = "500", description = "서버 내부 오류",
+                                        content = @Content)})
+        @DeleteMapping("/messages/{messageId}/")
+        public ResponseEntity<Void> deleteMessage(@Parameter(description = "삭제할 메시지의 ID",
+                        required = true, example = "1") @PathVariable("messageId") Long messageId) {
+                messageService.deleteMessage(messageId);
+                return ResponseEntity.noContent().build();
+        }
+
         @Operation(summary = "Recipient의 반응 목록 조회",
                         description = "특정 Recipient에 대한 반응(이모지) 목록을 페이지네이션하여 조회합니다.")
         @ApiResponses(value = {

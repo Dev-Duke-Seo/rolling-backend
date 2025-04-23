@@ -107,7 +107,7 @@ public class MessageServiceImpl implements MessageService {
                                 .orElseThrow(() -> new ResourceNotFoundException(
                                                 "Message not found with id: " + id));
                 messageRepository.delete(message);
-                return ServiceResult.success(null);
+                return ServiceResult.success("message deleted");
         }
 
         //
