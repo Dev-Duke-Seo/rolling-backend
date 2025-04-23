@@ -11,7 +11,7 @@ public class ColorTypeConverter implements AttributeConverter<ColorType, String>
         if (attribute == null) {
             return null;
         }
-        return attribute.getValue(); // 예: "#800080" 저장
+        return attribute.getValue();
     }
 
     @Override

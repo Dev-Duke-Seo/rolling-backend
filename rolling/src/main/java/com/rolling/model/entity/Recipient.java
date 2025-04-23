@@ -29,7 +29,7 @@ public class Recipient {
     private String name;
 
     @Column(nullable = false)
-    @Convert(converter = ColorTypeConverter.class)
+    @Enumerated(EnumType.STRING)
     private ColorType backgroundColor;
 
     @Column(nullable = true)
@@ -62,6 +62,7 @@ public class Recipient {
         recipient.name = recipientDto.getName();
         recipient.backgroundColor = colorType;
         recipient.backgroundImageURL = recipientDto.getBackgroundImageURL();
+        recipient.createdAt = LocalDateTime.now();
         return recipient;
     }
 }

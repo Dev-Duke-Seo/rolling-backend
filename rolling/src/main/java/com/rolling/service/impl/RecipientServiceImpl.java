@@ -116,7 +116,7 @@ public class RecipientServiceImpl implements RecipientService {
                                                 .collect(Collectors.toList());
 
                 return RecipientDto.builder().id(recipient.getId()).name(recipient.getName())
-                                .backgroundColor(recipient.getBackgroundColor().getValue())
+                                .backgroundColor(recipient.getBackgroundColor())
                                 .backgroundImageURL(recipient.getBackgroundImageURL())
                                 .createdAt(recipient.getCreatedAt())
                                 .messageCount(recipient.getMessages().size())
