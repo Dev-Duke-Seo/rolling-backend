@@ -14,6 +14,7 @@ public class CorsConfig {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
 
+        // TODO: 배포 환경에서 변경필요
         config.addAllowedOrigin("http://localhost:3000");
 
         // 모든 헤더 허용
