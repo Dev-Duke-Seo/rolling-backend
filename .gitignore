@@ -38,3 +38,6 @@ out/
 
 ### NOT_USED_BUT_KEEP ###
 src/main/java/com/rolling/TBD/
+
+### MariaDB ###
+.env
