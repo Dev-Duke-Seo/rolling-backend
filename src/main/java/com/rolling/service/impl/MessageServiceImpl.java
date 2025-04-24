@@ -5,7 +5,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import com.rolling.exception.ResourceNotFoundException;
+import com.rolling.exception.ServiceError;
 import com.rolling.model.ServiceResult;
 import com.rolling.model.dto.MessageDto;
 import com.rolling.model.dto.PageResponseDto;
@@ -30,8 +30,7 @@ public class MessageServiceImpl implements MessageService {
         @Override
         public ServiceResult<MessageDto> createMessage(Message message, Long recipientId) {
                 Recipient recipient = recipientRepository.findById(recipientId)
-                                .orElseThrow(() -> new ResourceNotFoundException(
-                                                "Recipient not found with id: " + recipientId));
+                                .orElseThrow(() -> ServiceError.recipientNotFound(recipientId));
                 message.setRecipient(recipient);
                 Message savedMessage = messageRepository.save(message);
                 return ServiceResult.success(convertToDto(savedMessage));
@@ -41,8 +40,7 @@ public class MessageServiceImpl implements MessageService {
         @Override
         public ServiceResult<MessageDto> getMessageById(Long id) {
                 Message message = messageRepository.findById(id)
-                                .orElseThrow(() -> new ResourceNotFoundException(
-                                                "Message not found with id: " + id));
+                                .orElseThrow(() -> ServiceError.messageNotFound(id));
                 return ServiceResult.success(convertToDto(message));
         }
 
@@ -52,8 +50,7 @@ public class MessageServiceImpl implements MessageService {
                         int limit, int offset) {
                 // 순환 참조가 없는지 확인
                 if (!recipientRepository.existsById(recipientId)) {
-                        throw new ResourceNotFoundException(
-                                        "Recipient not found with id: " + recipientId);
+                        throw ServiceError.recipientNotFound(recipientId);
                 }
                 //
                 Pageable pageable = PageRequest.of(offset / limit, limit,
@@ -86,8 +83,7 @@ public class MessageServiceImpl implements MessageService {
         @Override
         public ServiceResult<MessageDto> updateMessage(Long id, Message messageDetails) {
                 Message message = messageRepository.findById(id)
-                                .orElseThrow(() -> new ResourceNotFoundException(
-                                                "Message not found with id: " + id));
+                                .orElseThrow(() -> ServiceError.messageNotFound(id));
                 //
                 message.setSender(messageDetails.getSender());
                 message.setProfileImageURL(messageDetails.getProfileImageURL());
@@ -104,8 +100,7 @@ public class MessageServiceImpl implements MessageService {
         @Override
         public ServiceResult<Void> deleteMessage(Long id) {
                 Message message = messageRepository.findById(id)
-                                .orElseThrow(() -> new ResourceNotFoundException(
-                                                "Message not found with id: " + id));
+                                .orElseThrow(() -> ServiceError.messageNotFound(id));
                 messageRepository.delete(message);
                 return ServiceResult.success("message deleted");
         }

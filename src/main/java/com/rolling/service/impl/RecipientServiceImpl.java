@@ -6,7 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import com.rolling.exception.ResourceNotFoundException;
+import com.rolling.exception.ServiceError;
 import com.rolling.model.ServiceResult;
 import com.rolling.model.dto.MessagePreviewDto;
 import com.rolling.model.dto.PageResponseDto;
@@ -52,8 +52,7 @@ public class RecipientServiceImpl implements RecipientService {
         @Override
         public ServiceResult<RecipientDto> getRecipientById(Long id) {
                 Recipient recipient = recipientRepository.findById(id)
-                                .orElseThrow(() -> new ResourceNotFoundException(
-                                                "Recipient not found with id: " + id));
+                                .orElseThrow(() -> ServiceError.recipientNotFound(id));
                 System.out.println("recipient: " + recipient);
 
                 return ServiceResult.success("Recipient found successfully", toDto(recipient),
@@ -65,6 +64,11 @@ public class RecipientServiceImpl implements RecipientService {
                         int offset) {
                 Pageable pageable = PageRequest.of(offset / limit, limit);
                 Page<Recipient> recipientsPage = recipientRepository.findAll(pageable);
+
+                if (recipientsPage.isEmpty()) {
+                        return ServiceResult.success("No recipients found", new PageResponseDto<>(),
+                                        HttpStatus.OK);
+                }
 
                 List<RecipientDto> recipients = recipientsPage.getContent().stream()
                                 .map(this::toDto).collect(Collectors.toList());
@@ -93,8 +97,7 @@ public class RecipientServiceImpl implements RecipientService {
         @Override
         public ServiceResult<Void> deleteRecipient(Long id) {
                 Recipient recipient = recipientRepository.findById(id)
-                                .orElseThrow(() -> new ResourceNotFoundException(
-                                                "Recipient not found with id: " + id));
+                                .orElseThrow(() -> ServiceError.recipientNotFound(id));
                 recipientRepository.delete(recipient);
                 return ServiceResult.<Void>builder().isSuccess(true)
                                 .message("Recipient deleted successfully").build();

@@ -29,6 +29,13 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(ServiceError.class)
+    public ResponseEntity<?> serviceErrorHandler(ServiceError ex, WebRequest request) {
+        ErrorResponse errorResponse = new ErrorResponse(new Date(), ex.getMessage(),
+                request.getDescription(false), ex.getErrorCode());
+        return new ResponseEntity<>(errorResponse, ex.getStatus());
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<?> globalExceptionHandler(Exception ex, WebRequest request) {
         ErrorDetails errorDetails =
@@ -59,5 +66,36 @@ class ErrorDetails {
 
     public String getDetails() {
         return details;
+    }
+}
+
+
+class ErrorResponse {
+    private Date timestamp;
+    private String message;
+    private String details;
+    private String errorCode;
+
+    public ErrorResponse(Date timestamp, String message, String details, String errorCode) {
+        this.timestamp = timestamp;
+        this.message = message;
+        this.details = details;
+        this.errorCode = errorCode;
+    }
+
+    public Date getTimestamp() {
+        return timestamp;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public String getDetails() {
+        return details;
+    }
+
+    public String getErrorCode() {
+        return errorCode;
     }
 }
