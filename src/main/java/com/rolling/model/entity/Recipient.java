@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 import com.rolling.model.dto.Recipient.RecipientCreateDto;
 import com.rolling.model.enums.ColorType;
-import com.rolling.model.enums.ColorTypeConverter;
 
 @Entity
 @Table(name = "recipients")

@@ -25,6 +25,6 @@ public enum ColorType {
                 return type;
             }
         }
-        throw new IllegalArgumentException("Unknown ColorType: " + value);
+        return BEIGE; // 기본값으로 BEIGE 반환
     }
 }
