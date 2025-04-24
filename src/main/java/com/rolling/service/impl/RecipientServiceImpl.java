@@ -133,7 +133,7 @@ public class RecipientServiceImpl implements RecipientService {
                 return MessagePreviewDto.builder().id(message.getId()).sender(message.getSender())
                                 .content(message.getContent()).createdAt(message.getCreatedAt())
                                 .profileImageURL(message.getProfileImageURL())
-                                .relationship(message.getRelationship()).build();
+                                .relationship(message.getRelationship().getValue()).build();
         }
 
         private ReactionPreviewDto convertToReactionPreviewDto(Reaction reaction) {

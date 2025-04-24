@@ -112,7 +112,7 @@ public class MessageServiceImpl implements MessageService {
                                 .sender(message.getSender())
                                 .profileImageURL(message.getProfileImageURL())
                                 .backgroundColor(ColorType.fromValue(message.getBackgroundColor()))
-                                .relationship(message.getRelationship())
+                                .relationship(message.getRelationship().getValue())
                                 .content(message.getContent()).font(message.getFont())
                                 .createdAt(message.getCreatedAt()).build();
         }

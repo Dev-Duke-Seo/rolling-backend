@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import java.time.LocalDateTime;
+import com.rolling.model.enums.RelationshipType;
 
 @Entity
 @Table(name = "messages")
@@ -35,7 +36,8 @@ public class Message {
     private String backgroundColor;
 
     @Column(nullable = false)
-    private String relationship;
+    @Enumerated(EnumType.STRING)
+    private RelationshipType relationship;
 
     @Column(nullable = false, columnDefinition = "TEXT")
     private String content;
