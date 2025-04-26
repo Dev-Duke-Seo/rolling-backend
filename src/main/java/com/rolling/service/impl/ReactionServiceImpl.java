@@ -5,6 +5,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import com.rolling.exception.ServiceError;
 import com.rolling.model.ServiceResult;
 import com.rolling.model.dto.PageResponseDto;
@@ -28,6 +29,7 @@ public class ReactionServiceImpl implements ReactionService {
         private final RecipientRepository recipientRepository;
 
         @Override
+        @Transactional
         public ServiceResult<ReactionDto> addReaction(Long recipientId,
                         ReactionCreateDto reactionCreateDto) {
                 Recipient recipient = recipientRepository.findById(recipientId)
@@ -62,6 +64,7 @@ public class ReactionServiceImpl implements ReactionService {
         }
 
         @Override
+        @Transactional(readOnly = true)
         public ServiceResult<PageResponseDto<ReactionDto>> getReactionsByRecipientId(
                         Long recipientId, int limit, int offset) {
                 if (!recipientRepository.existsById(recipientId)) {

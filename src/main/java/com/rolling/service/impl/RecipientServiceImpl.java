@@ -50,6 +50,7 @@ public class RecipientServiceImpl implements RecipientService {
         }
 
         @Override
+        @Transactional(readOnly = true)
         public ServiceResult<RecipientDto> getRecipientById(Long id) {
                 Recipient recipient = recipientRepository.findById(id)
                                 .orElseThrow(() -> ServiceError.recipientNotFound(id));
@@ -60,6 +61,7 @@ public class RecipientServiceImpl implements RecipientService {
         }
 
         @Override
+        @Transactional(readOnly = true)
         public ServiceResult<PageResponseDto<RecipientDto>> getAllRecipients(int limit,
                         int offset) {
                 Pageable pageable = PageRequest.of(offset / limit, limit);
@@ -95,6 +97,7 @@ public class RecipientServiceImpl implements RecipientService {
         }
 
         @Override
+        @Transactional
         public ServiceResult<Void> deleteRecipient(Long id) {
                 Recipient recipient = recipientRepository.findById(id)
                                 .orElseThrow(() -> ServiceError.recipientNotFound(id));

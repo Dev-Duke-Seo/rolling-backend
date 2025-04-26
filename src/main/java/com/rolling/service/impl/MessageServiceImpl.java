@@ -5,6 +5,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import com.rolling.exception.ServiceError;
 import com.rolling.model.ServiceResult;
 import com.rolling.model.dto.MessageDto;
@@ -28,6 +29,7 @@ public class MessageServiceImpl implements MessageService {
 
         //
         @Override
+        @Transactional
         public ServiceResult<MessageDto> createMessage(Message message, Long recipientId) {
                 Recipient recipient = recipientRepository.findById(recipientId)
                                 .orElseThrow(() -> ServiceError.recipientNotFound(recipientId));
@@ -38,6 +40,7 @@ public class MessageServiceImpl implements MessageService {
 
         //
         @Override
+        @Transactional(readOnly = true)
         public ServiceResult<MessageDto> getMessageById(Long id) {
                 Message message = messageRepository.findById(id)
                                 .orElseThrow(() -> ServiceError.messageNotFound(id));
@@ -46,6 +49,7 @@ public class MessageServiceImpl implements MessageService {
 
         //
         @Override
+        @Transactional(readOnly = true)
         public ServiceResult<PageResponseDto<MessageDto>> getMessagesByRecipientId(Long recipientId,
                         int limit, int offset) {
                 // 순환 참조가 없는지 확인
@@ -81,6 +85,7 @@ public class MessageServiceImpl implements MessageService {
 
         //
         @Override
+        @Transactional
         public ServiceResult<MessageDto> updateMessage(Long id, Message messageDetails) {
                 Message message = messageRepository.findById(id)
                                 .orElseThrow(() -> ServiceError.messageNotFound(id));
@@ -98,6 +103,7 @@ public class MessageServiceImpl implements MessageService {
 
         //
         @Override
+        @Transactional
         public ServiceResult<Void> deleteMessage(Long id) {
                 Message message = messageRepository.findById(id)
                                 .orElseThrow(() -> ServiceError.messageNotFound(id));
