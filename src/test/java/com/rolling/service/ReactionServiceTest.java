@@ -165,4 +165,27 @@ public class ReactionServiceTest {
                 assertEquals("👍", result.getDataOrNull().getResults().get(0).getEmoji());
                 assertEquals(5, result.getDataOrNull().getResults().get(0).getCount());
         }
+
+        @Test
+        @DisplayName("새로운 반응 타입 테스트")
+        void addReaction_NewType_ShouldHandleCorrectly() {
+                // given
+                ReactionCreateDto newTypeDto =
+                                ReactionCreateDto.builder().emoji("🎉").type("newType").build();
+
+                Reaction partyReaction = Reaction.builder().id(2L).recipient(recipient).emoji("🎉")
+                                .count(0).build();
+
+                when(recipientRepository.findById(anyLong())).thenReturn(Optional.of(recipient));
+                when(reactionRepository.findByRecipientIdAndEmoji(anyLong(), any(String.class)))
+                                .thenReturn(Optional.empty());
+                when(reactionRepository.save(any(Reaction.class))).thenReturn(partyReaction);
+
+                // when
+                ServiceResult<ReactionDto> result = reactionService.addReaction(1L, newTypeDto);
+
+                // then
+                assertTrue(result.isSuccess());
+                assertEquals("🎉", result.getDataOrNull().getEmoji());
+        }
 }

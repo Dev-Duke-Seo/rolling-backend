@@ -30,6 +30,7 @@ import com.rolling.model.dto.PageResponseDto;
 import com.rolling.model.entity.Message;
 import com.rolling.model.entity.Recipient;
 import com.rolling.model.enums.ColorType;
+import com.rolling.model.enums.RelationshipType;
 import com.rolling.repository.MessageRepository;
 import com.rolling.repository.RecipientRepository;
 import com.rolling.service.impl.MessageServiceImpl;
@@ -58,7 +59,7 @@ public class MessageServiceTest {
                 .build();
 
         message = Message.builder().id(1L).recipient(recipient).sender("테스트 발신자")
-                .content("테스트 메시지 내용").relationship("친구")
+                .content("테스트 메시지 내용").relationship(RelationshipType.FRIEND)
                 .backgroundColor(ColorType.PURPLE.getValue()).font("Arial")
                 .profileImageURL("https://example.com/profile.jpg").createdAt(LocalDateTime.now())
                 .build();
@@ -131,8 +132,9 @@ public class MessageServiceTest {
     void updateMessage_ShouldReturnUpdatedMessage() {
         // given
         Message updatedMessage = Message.builder().id(1L).recipient(recipient).sender("업데이트된 발신자")
-                .content("업데이트된 내용").relationship("가족").backgroundColor(ColorType.GREEN.getValue())
-                .font("Verdana").profileImageURL("https://example.com/updated.jpg")
+                .content("업데이트된 내용").relationship(RelationshipType.FAMILY)
+                .backgroundColor(ColorType.GREEN.getValue()).font("Verdana")
+                .profileImageURL("https://example.com/updated.jpg")
                 .createdAt(message.getCreatedAt()).build();
 
         when(messageRepository.findById(anyLong())).thenReturn(Optional.of(message));
@@ -162,5 +164,51 @@ public class MessageServiceTest {
         // then
         assertTrue(result.isSuccess());
         verify(messageRepository, times(1)).delete(message);
+    }
+
+    @Test
+    @DisplayName("메시지 업데이트 - 존재하지 않는 메시지")
+    void updateMessage_NonExistentMessage_ShouldReturnError() {
+        // given
+        Message updatedMessage = Message.builder().id(999L).recipient(recipient).sender("업데이트된 발신자")
+                .content("업데이트된 내용").relationship(RelationshipType.FAMILY)
+                .backgroundColor(ColorType.GREEN.getValue()).font("Verdana")
+                .profileImageURL("https://example.com/updated.jpg").createdAt(LocalDateTime.now())
+                .build();
+
+        when(messageRepository.findById(anyLong())).thenReturn(Optional.empty());
+
+        // when
+        ServiceResult<MessageDto> result = messageService.updateMessage(999L, updatedMessage);
+
+        // then
+        assertTrue(!result.isSuccess());
+    }
+
+    @Test
+    @DisplayName("메시지 삭제 - 존재하지 않는 메시지")
+    void deleteMessage_NonExistentMessage_ShouldReturnError() {
+        // given
+        when(messageRepository.findById(anyLong())).thenReturn(Optional.empty());
+
+        // when
+        ServiceResult<Void> result = messageService.deleteMessage(999L);
+
+        // then
+        assertTrue(!result.isSuccess());
+    }
+
+    @Test
+    @DisplayName("수신자 ID로 메시지 목록 조회 - 수신자가 없는 경우")
+    void getMessagesByRecipientId_NonExistentRecipient_ShouldReturnError() {
+        // given
+        when(recipientRepository.existsById(anyLong())).thenReturn(false);
+
+        // when
+        ServiceResult<PageResponseDto<MessageDto>> result =
+                messageService.getMessagesByRecipientId(999L, 10, 0);
+
+        // then
+        assertTrue(!result.isSuccess());
     }
 }

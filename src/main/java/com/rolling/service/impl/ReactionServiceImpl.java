@@ -4,6 +4,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.rolling.exception.ServiceError;
@@ -68,7 +69,10 @@ public class ReactionServiceImpl implements ReactionService {
         public ServiceResult<PageResponseDto<ReactionDto>> getReactionsByRecipientId(
                         Long recipientId, int limit, int offset) {
                 if (!recipientRepository.existsById(recipientId)) {
-                        throw ServiceError.recipientNotFound(recipientId);
+                        return ServiceResult.<PageResponseDto<ReactionDto>>builder()
+                                        .isSuccess(false)
+                                        .message("수신자(id: " + recipientId + ")를 찾을 수 없습니다")
+                                        .status(HttpStatus.NOT_FOUND).build();
                 }
 
                 Pageable pageable = PageRequest.of(offset / limit, limit,

@@ -4,6 +4,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.rolling.exception.ServiceError;
@@ -18,6 +19,7 @@ import com.rolling.repository.RecipientRepository;
 import com.rolling.service.MessageService;
 import lombok.RequiredArgsConstructor;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -54,7 +56,9 @@ public class MessageServiceImpl implements MessageService {
                         int limit, int offset) {
                 // 순환 참조가 없는지 확인
                 if (!recipientRepository.existsById(recipientId)) {
-                        throw ServiceError.recipientNotFound(recipientId);
+                        return ServiceResult.<PageResponseDto<MessageDto>>builder().isSuccess(false)
+                                        .message("수신자(id: " + recipientId + ")를 찾을 수 없습니다")
+                                        .status(HttpStatus.NOT_FOUND).build();
                 }
                 //
                 Pageable pageable = PageRequest.of(offset / limit, limit,
@@ -87,8 +91,14 @@ public class MessageServiceImpl implements MessageService {
         @Override
         @Transactional
         public ServiceResult<MessageDto> updateMessage(Long id, Message messageDetails) {
-                Message message = messageRepository.findById(id)
-                                .orElseThrow(() -> ServiceError.messageNotFound(id));
+                Optional<Message> messageOpt = messageRepository.findById(id);
+                if (messageOpt.isEmpty()) {
+                        return ServiceResult.<MessageDto>builder().isSuccess(false)
+                                        .message("메시지(id: " + id + ")를 찾을 수 없습니다")
+                                        .status(HttpStatus.NOT_FOUND).build();
+                }
+
+                Message message = messageOpt.get();
                 //
                 message.setSender(messageDetails.getSender());
                 message.setProfileImageURL(messageDetails.getProfileImageURL());
@@ -105,9 +115,14 @@ public class MessageServiceImpl implements MessageService {
         @Override
         @Transactional
         public ServiceResult<Void> deleteMessage(Long id) {
-                Message message = messageRepository.findById(id)
-                                .orElseThrow(() -> ServiceError.messageNotFound(id));
-                messageRepository.delete(message);
+                Optional<Message> messageOpt = messageRepository.findById(id);
+                if (messageOpt.isEmpty()) {
+                        return ServiceResult.<Void>builder().isSuccess(false)
+                                        .message("메시지(id: " + id + ")를 찾을 수 없습니다")
+                                        .status(HttpStatus.NOT_FOUND).build();
+                }
+
+                messageRepository.delete(messageOpt.get());
                 return ServiceResult.success("message deleted");
         }
 
