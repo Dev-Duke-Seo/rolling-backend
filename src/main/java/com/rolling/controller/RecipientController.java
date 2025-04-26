@@ -114,7 +114,12 @@ public class RecipientController {
         @DeleteMapping("/{id}/")
         public ResponseEntity<Void> deleteRecipient(@Parameter(description = "삭제할 Recipient의 ID",
                         required = true, example = "1") @PathVariable Long id) {
-                recipientService.deleteRecipient(id);
+                ServiceResult<Void> result = recipientService.deleteRecipient(id);
+
+                if (!result.isSuccess()) {
+                        return ResponseEntity.status(result.getStatus()).build();
+                }
+
                 return ResponseEntity.noContent().build();
         }
 
@@ -182,7 +187,12 @@ public class RecipientController {
         @DeleteMapping("/messages/{messageId}/")
         public ResponseEntity<Void> deleteMessage(@Parameter(description = "삭제할 메시지의 ID",
                         required = true, example = "1") @PathVariable("messageId") Long messageId) {
-                messageService.deleteMessage(messageId);
+                ServiceResult<Void> result = messageService.deleteMessage(messageId);
+
+                if (!result.isSuccess()) {
+                        return ResponseEntity.status(result.getStatus()).build();
+                }
+
                 return ResponseEntity.noContent().build();
         }
 
