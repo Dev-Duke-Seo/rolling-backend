@@ -13,7 +13,9 @@ import com.rolling.model.dto.Recipient.RecipientCreateDto;
 import com.rolling.model.enums.ColorType;
 
 @Entity
-@Table(name = "recipients")
+@Table(name = "recipients", indexes = {
+        @Index(name = "idx_recipient_created_at", columnList = "createdAt DESC")
+})
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
@@ -36,14 +38,12 @@ public class Recipient {
 
     private LocalDateTime createdAt;
 
-    @OneToMany(mappedBy = "recipient", cascade = CascadeType.ALL, orphanRemoval = true,
-            fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "recipient", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @Builder.Default
     @ToString.Exclude
     private List<Message> messages = new ArrayList<>();
 
-    @OneToMany(mappedBy = "recipient", cascade = CascadeType.ALL, orphanRemoval = true,
-            fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "recipient", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @Builder.Default
     @ToString.Exclude
     private List<Reaction> reactions = new ArrayList<>();
@@ -52,7 +52,6 @@ public class Recipient {
     protected void onCreate() {
         createdAt = LocalDateTime.now();
     }
-
 
     public static Recipient fromDto(RecipientCreateDto recipientDto) {
         ColorType colorType = ColorType.fromValue(recipientDto.getBackgroundColor());

@@ -63,9 +63,16 @@ public class RecipientServiceImpl implements RecipientService {
         @Override
         @Transactional(readOnly = true)
         public ServiceResult<PageResponseDto<RecipientDto>> getAllRecipients(int limit,
-                        int offset) {
+                        int offset, String sort) {
+
                 Pageable pageable = PageRequest.of(offset / limit, limit);
-                Page<Recipient> recipientsPage = recipientRepository.findAll(pageable);
+                Page<Recipient> recipientsPage;
+
+                if (sort.equals("popular")) {
+                        recipientsPage = recipientRepository.findAllByOrderByMessageCountDesc(pageable);
+                } else {
+                        recipientsPage = recipientRepository.findAllByOrderByCreatedAtDesc(pageable);
+                }
 
                 if (recipientsPage.isEmpty()) {
                         return ServiceResult.success("No recipients found", new PageResponseDto<>(),
@@ -79,12 +86,13 @@ public class RecipientServiceImpl implements RecipientService {
                 String prevUrl = null;
 
                 if (recipientsPage.hasNext()) {
-                        nextUrl = "/recipients/?limit=" + limit + "&offset=" + (offset + limit);
+                        nextUrl = "/recipients/?limit=" + limit + "&offset=" + (offset + limit)
+                                        + "&sort=" + sort;
                 }
 
                 if (offset > 0) {
                         prevUrl = "/recipients/?limit=" + limit + "&offset="
-                                        + Math.max(0, offset - limit);
+                                        + Math.max(0, offset - limit) + "&sort=" + sort;
                 }
 
                 return ServiceResult.<PageResponseDto<RecipientDto>>builder().isSuccess(true)
@@ -117,9 +125,9 @@ public class RecipientServiceImpl implements RecipientService {
                 List<Reaction> topReactions = recipient.getReactions().stream()
                                 .sorted(Comparator.comparing(Reaction::getCount).reversed())
                                 .limit(3).collect(Collectors.toList());
-                List<ReactionPreviewDto> reactionPreviewDtos =
-                                topReactions.stream().map(this::convertToReactionPreviewDto)
-                                                .collect(Collectors.toList());
+                List<ReactionPreviewDto> reactionPreviewDtos = topReactions.stream()
+                                .map(this::convertToReactionPreviewDto)
+                                .collect(Collectors.toList());
 
                 return RecipientDto.builder().id(recipient.getId()).name(recipient.getName())
                                 .backgroundColor(recipient.getBackgroundColor())

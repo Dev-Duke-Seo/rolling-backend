@@ -10,7 +10,7 @@ public interface RecipientService {
 
     ServiceResult<RecipientDto> getRecipientById(Long id);
 
-    ServiceResult<PageResponseDto<RecipientDto>> getAllRecipients(int limit, int offset);
+    ServiceResult<PageResponseDto<RecipientDto>> getAllRecipients(int limit, int offset, String sort);
 
     ServiceResult<Void> deleteRecipient(Long id);
 
