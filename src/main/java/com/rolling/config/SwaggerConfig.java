@@ -21,9 +21,6 @@ public class SwaggerConfig {
         @Value("${rolling.openapi.dev-url}")
         private String devUrl;
 
-        // @Value("${rolling.openapi.prod-url}")
-        // private String prodUrl;
-
         @Bean
         public GroupedOpenApi recipientApi() {
                 return GroupedOpenApi.builder().group("recipient-api")
