@@ -46,9 +46,9 @@ public class SwaggerConfig {
                 devServer.setUrl(devUrl);
                 devServer.setDescription("개발 서버");
 
-                Server prodServer = new Server();
-                prodServer.setUrl(prodUrl);
-                prodServer.setDescription("운영 서버");
+                // Server prodServer = new Server();
+                // prodServer.setUrl(prodUrl);
+                // prodServer.setDescription("운영 서버");
 
                 // 태그 정의 추가
                 List<Tag> tags = Arrays.asList(
@@ -65,7 +65,7 @@ public class SwaggerConfig {
                                 .externalDocs(new ExternalDocumentation()
                                                 .description("Rolling GitHub")
                                                 .url("https://github.com/users/Dev-Duke-Seo/projects/3"))
-                                .servers(Arrays.asList(devServer, prodServer)).tags(tags);
+                                .servers(Arrays.asList(devServer)).tags(tags);
         }
 
         private Tag createTag(String name, String description) {
