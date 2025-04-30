@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
+import java.util.Arrays;
 
 @Configuration
 public class CorsConfig {
@@ -14,14 +15,13 @@ public class CorsConfig {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
 
-        // TODO: 배포 환경에서 변경필요
-        config.addAllowedOrigin("http://localhost:3000");
-
+        // 프론트엔드 도메인 설정
+        config.addAllowedOrigin("*");
         // 모든 헤더 허용
         config.addAllowedHeader("*");
 
         // 모든 HTTP 메서드 허용
-        config.addAllowedMethod("*");
+        config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
 
         // 인증 정보 허용
         config.setAllowCredentials(true);
