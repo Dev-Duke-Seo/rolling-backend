@@ -1,6 +1,7 @@
 package com.rolling.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -116,8 +117,7 @@ public class MessageServiceTest {
                 .thenReturn(messagePage);
 
         // when
-        ServiceResult<PageResponseDto<MessageDto>> result =
-                messageService.getMessagesByRecipientId(1L, 10, 0);
+        ServiceResult<PageResponseDto<MessageDto>> result = messageService.getMessagesByRecipientId(1L, 10, 0);
 
         // then
         assertTrue(result.isSuccess());
@@ -182,7 +182,7 @@ public class MessageServiceTest {
         ServiceResult<MessageDto> result = messageService.updateMessage(999L, updatedMessage);
 
         // then
-        assertTrue(!result.isSuccess());
+        assertFalse(result.isSuccess());
     }
 
     @Test
@@ -195,7 +195,7 @@ public class MessageServiceTest {
         ServiceResult<Void> result = messageService.deleteMessage(999L);
 
         // then
-        assertTrue(!result.isSuccess());
+        assertFalse(result.isSuccess());
     }
 
     @Test
@@ -205,10 +205,9 @@ public class MessageServiceTest {
         when(recipientRepository.existsById(anyLong())).thenReturn(false);
 
         // when
-        ServiceResult<PageResponseDto<MessageDto>> result =
-                messageService.getMessagesByRecipientId(999L, 10, 0);
+        ServiceResult<PageResponseDto<MessageDto>> result = messageService.getMessagesByRecipientId(999L, 10, 0);
 
         // then
-        assertTrue(!result.isSuccess());
+        assertFalse(result.isSuccess());
     }
 }
