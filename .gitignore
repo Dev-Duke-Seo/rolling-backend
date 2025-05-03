@@ -41,3 +41,12 @@ src/main/java/com/rolling/TBD/
 
 ### MariaDB ###
 .env
+src/main/resources/keystore.p12
+docker-compose.yml
+Dockerfile
+generate-ssl.sh
+init-letsencrypt.sh
+Jenkinsfile
+.github/workflows/ci-cd.yml
+nginx/conf/default.conf
+scripts/deploy.sh
