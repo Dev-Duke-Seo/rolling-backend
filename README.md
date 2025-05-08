@@ -1,28 +1,36 @@
-# Rolling 백엔드 서비스
+# 🎁 Rolling - 온라인 롤링페이퍼 백엔드 서비스
 
-## 프로젝트 개요
-Rolling은 온라인 롤링페이퍼 서비스의 백엔드 시스템입니다. 사용자들이 메시지와 감정을 공유할 수 있는 디지털 롤링페이퍼 플랫폼을 제공합니다.
+> 사용자들이 메시지와 감정을 공유할 수 있는 디지털 롤링페이퍼 플랫폼의 백엔드 시스템
 
-## 기술 스택
-- Java 17
-- Spring Boot 3.4.4
-- Spring Data JPA
-- H2 Database
-- Gradle 8.13
-- Lombok
+![Rolling 서비스 이미지](https://via.placeholder.com/800x400?text=Rolling+Backend+Service)
 
-## 주요 기능
-- 롤링페이퍼 생성 및 관리
-- 메시지 작성 및 조회
-- 배경색상 설정 (BEIGE, BLUE, GREEN, PURPLE)
-- REST API 제공
-- 글로벌 예외 처리
+## 📝 프로젝트 소개
 
-## 개발 환경 설정
+Rolling은 사용자들이 온라인에서 손쉽게 롤링페이퍼를 만들고 공유할 수 있는 서비스입니다. 전통적인 종이 롤링페이퍼의 따뜻함과 정성을 디지털 환경에서도 느낄 수 있도록 설계되었습니다.
+
+### 주요 기능
+- 개인화된 롤링페이퍼 생성 및 관리
+- 다양한 배경색상 옵션 (BEIGE, BLUE, GREEN, PURPLE)
+- 메시지 작성 및 조회 기능
+- RESTful API 제공으로 프론트엔드와 원활한 연동
+- 글로벌 예외 처리 시스템
+
+## 🛠️ 기술 스택
+
+![Java](https://img.shields.io/badge/Java-17-orange?style=flat-square&logo=java)
+![Spring Boot](https://img.shields.io/badge/Spring_Boot-3.4.4-green?style=flat-square&logo=spring-boot)
+![Spring Data JPA](https://img.shields.io/badge/Spring_Data_JPA-latest-green?style=flat-square&logo=spring)
+![MariaDB](https://img.shields.io/badge/MariaDB-latest-blue?style=flat-square&logo=mariadb)
+![Gradle](https://img.shields.io/badge/Gradle-8.13-blue?style=flat-square&logo=gradle)
+![Lombok](https://img.shields.io/badge/Lombok-latest-red?style=flat-square&logo=lombok)
+![Swagger](https://img.shields.io/badge/Swagger-OpenAPI_3.0-green?style=flat-square&logo=swagger)
+
+## 🚀 설치 및 실행 방법
 
 ### 필수 요구사항
 - JDK 17 이상
 - Gradle 8.13 이상
+- MariaDB
 
 ### 로컬 개발 환경 설정
 1. 저장소 클론
@@ -31,27 +39,31 @@ git clone <repository-url>
 cd rolling
 ```
 
-2. 애플리케이션 빌드
+2. 환경 변수 설정
+```bash
+export DB_URL=jdbc:mariadb://localhost:3306/rolling_db
+export DB_USERNAME=root
+export DB_PASSWORD=yourpassword
+```
+
+3. 애플리케이션 빌드
 ```bash
 ./gradlew build
 ```
 
-3. 애플리케이션 실행
+4. 애플리케이션 실행
 ```bash
 ./gradlew bootRun
 ```
 
 ### 데이터베이스 설정
-- H2 인메모리 데이터베이스를 사용
-- 데이터베이스 파일은 `./data/rolling_db`에 저장됨
-- H2 콘솔: http://localhost:8080/h2-console
-  - JDBC URL: jdbc:h2:file:./data/rolling_db
-  - 사용자명: sa
-  - 비밀번호: (빈 값)
+- MariaDB 사용
+- 환경 변수로 연결 정보 관리 (DB_URL, DB_USERNAME, DB_PASSWORD)
+- 초기 데이터는 data.sql을 통해 자동 로드
 
-## 데이터 모델
+## 📋 주요 기능 및 API
 
-### 주요 엔티티
+### 데이터 모델
 1. **Recipients** - 롤링페이퍼 수신자 정보
    - 배경색상 옵션: BEIGE, BLUE, GREEN, PURPLE
 
@@ -59,14 +71,15 @@ cd rolling
 
 3. **User** - 사용자 정보
 
-## API 엔드포인트
+### API 문서
+- Swagger UI: http://localhost:8080/swagger-ui.html
+- API 문서: http://localhost:8080/v3/api-docs
 
-현재 프로젝트는 다음과 같은 예외 처리가 구현되어 있습니다:
-
+### 예외 처리
 - **404 Not Found**: 리소스를 찾을 수 없는 경우
 - **500 Internal Server Error**: 서버 내부 오류 발생 시
 
-## 프로젝트 구조
+## 🏗️ 프로젝트 구조 및 아키텍처
 ```
 rolling/
 ├── src/
@@ -81,58 +94,214 @@ rolling/
 │   │   │           ├── service/     # 비즈니스 로직
 │   │   │           └── exception/   # 예외 처리
 │   │   └── resources/
-│   │       └── application.properties  # 애플리케이션 설정
+│   │       ├── application.properties      # 기본 설정
+│   │       ├── application-prod.properties # 운영 환경 설정
+│   │       └── data.sql                    # 초기 데이터
 │   └── test/        # 테스트 코드
-├── data/            # H2 데이터베이스 파일
 ├── gradle/          # Gradle 래퍼
 ├── build.gradle     # Gradle 빌드 스크립트
 └── settings.gradle  # Gradle 설정
 ```
 
-## 애플리케이션 설정
+### 아키텍처 다이어그램
 
-### 주요 설정 (application.properties)
-```properties
-# 서버 설정
-spring.application.name=rolling
-server.port=8080
-
-# H2 데이터베이스 설정
-spring.datasource.url=jdbc:h2:file:./data/rolling_db;DB_CLOSE_ON_EXIT=TRUE;AUTO_SERVER=TRUE
-spring.datasource.username=sa
-spring.datasource.password=
-spring.h2.console.enabled=true
-spring.h2.console.path=/h2-console
-
-# JPA 설정
-spring.jpa.hibernate.ddl-auto=update
-spring.jpa.show-sql=true
-spring.jpa.properties.hibernate.format_sql=true
-spring.jpa.hibernate.naming.physical-strategy=com.rolling.config.jpa.SnakeCasePhysicalNamingStrategy
-
-# 로깅 설정
-logging.level.com.rolling=DEBUG
-logging.level.org.springframework=INFO
-logging.level.org.springframework.beans=DEBUG
-logging.level.org.hibernate=DEBUG
-
-# 타임존 설정
-spring.jackson.time-zone=Asia/Seoul
+```
+┌─────────────┐     ┌─────────────┐     ┌─────────────┐
+│    Nginx    │────▶│ Spring Boot │────▶│   MariaDB   │
+│  (Reverse   │     │     App     │     │  Database   │
+│   Proxy)    │     │             │     │             │
+└─────────────┘     └─────────────┘     └─────────────┘
+       │                                       │
+       │                                       │
+       ▼                                       ▼
+┌─────────────┐                      ┌─────────────────┐
+│   Certbot   │                      │ Persistent Data │
+│  (SSL 관리) │                      │     Volume      │
+└─────────────┘                      └─────────────────┘
 ```
 
-## 알려진 이슈
-- **배경색상 Enum 처리**: Enum 타입 'BEIGE', 'BLUE', 'GREEN', 'PURPLE'과 정수 값 사이의 비교에서 타입 변환 문제 발생 가능
-- **해결 방법**: 배경색상 필드 타입을 일관되게 유지하고, Enum <-> Integer 변환 시 적절한 컨버터 사용
+## 📊 애플리케이션 설정
 
-## 배포
-- 프로덕션 환경에 배포하기 전에 적절한 데이터베이스 설정과 보안 설정을 구성해야 합니다.
-- 필요에 따라 `application-prod.properties` 파일을 생성하여 프로덕션 환경 설정을 관리할 수 있습니다.
+### 개발 환경 설정 (application.properties)
+```properties
+# MariaDB 데이터베이스 설정
+spring.datasource.url=${DB_URL}
+spring.datasource.username=${DB_USERNAME}
+spring.datasource.password=${DB_PASSWORD}
+spring.datasource.driver-class-name=org.mariadb.jdbc.Driver
 
-## 테스트
-테스트 실행:
+# JPA 설정 - 스키마 관리
+spring.jpa.hibernate.ddl-auto=create-drop
+spring.jpa.properties.hibernate.format_sql=true
+spring.jpa.database-platform=org.hibernate.dialect.MariaDBDialect
+
+# SQL 초기화 스크립트 실행 설정
+spring.sql.init.mode=always
+spring.jpa.defer-datasource-initialization=true
+spring.sql.init.data-locations=classpath:data.sql
+
+# 로깅 설정
+logging.level.com.rolling=ERROR
+logging.level.org.springframework=ERROR
+
+# Swagger OpenAPI 설정
+springdoc.api-docs.path=/v3/api-docs
+springdoc.swagger-ui.path=/swagger-ui.html
+```
+
+### 운영 환경 설정 (application-prod.properties)
+```properties
+# 운영 환경 설정
+spring.jpa.hibernate.ddl-auto=validate
+spring.sql.init.mode=never
+
+# 로깅 레벨 조정
+logging.level.com.rolling=WARN
+logging.level.org.springframework=WARN
+
+# 개발 도구 비활성화
+spring.devtools.restart.enabled=false
+spring.devtools.livereload.enabled=false
+
+# 데이터베이스 커넥션 풀 최적화
+spring.datasource.hikari.maximum-pool-size=20
+spring.datasource.hikari.minimum-idle=10
+
+# 성능 최적화 설정
+spring.jpa.properties.hibernate.generate_statistics=false
+spring.jpa.properties.hibernate.jdbc.batch_size=50
+```
+
+## 🚢 배포
+
+### 인프라 구성
+Rolling 서비스는 Docker 컨테이너 기반으로 구성되어 있으며, 다음과 같은 컴포넌트로 구성됩니다:
+
+```
+┌─────────────┐     ┌─────────────┐     ┌─────────────┐
+│    Nginx    │────▶│ Spring Boot │────▶│   MariaDB   │
+│  (Reverse   │     │     App     │     │  Database   │
+│   Proxy)    │     │             │     │             │
+└─────────────┘     └─────────────┘     └─────────────┘
+       │                                       │
+       │                                       │
+       ▼                                       ▼
+┌─────────────┐                      ┌─────────────────┐
+│   Certbot   │                      │ Persistent Data │
+│  (SSL 관리) │                      │     Volume      │
+└─────────────┘                      └─────────────────┘
+```
+
+### 멀티 스테이지 Docker 빌드
+애플리케이션은 멀티 스테이지 Docker 빌드를 통해 최적화된 이미지로 빌드됩니다:
+
+```dockerfile
+# 빌드 스테이지
+FROM openjdk:17-slim AS build
+WORKDIR /app
+COPY . .
+RUN ./gradlew build -x test
+
+# 실행 스테이지
+FROM openjdk:17-slim
+WORKDIR /app
+COPY --from=build /app/build/libs/rolling-0.0.1-SNAPSHOT.jar app.jar
+EXPOSE 8080
+ENTRYPOINT ["java", "-jar", "app.jar"]
+```
+
+### Docker Compose 배포
+전체 시스템은 Docker Compose를 통해 다음과 같은 서비스로 구성됩니다:
+
+1. **app**: Spring Boot 애플리케이션
+   - 자동 빌드 및 배포
+   - MariaDB 의존성 관리
+   - 애플리케이션 네트워크 연결
+
+2. **nginx**: 웹 서버 및 리버스 프록시
+   - HTTP/HTTPS 포트 노출 (80/443)
+   - SSL 인증서 관리
+   - 자동 설정 리로드
+   - 애플리케이션으로 트래픽 라우팅
+
+3. **certbot**: SSL 인증서 자동화
+   - 인증서 자동 갱신
+   - Let's Encrypt 연동
+
+4. **mariadb**: 데이터베이스
+   - 데이터 영속성을 위한 볼륨 마운트
+   - 헬스체크 구성
+   - 데이터베이스 초기화
+
+### 배포 방법
+
+#### 1. 환경 준비
+```bash
+# 필요한 디렉토리 구조 생성
+mkdir -p nginx/conf nginx/ssl certbot/conf certbot/www
+```
+
+#### 2. SSL 인증서 준비
+```bash
+# 자체 서명 인증서 생성 (개발용)
+openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout nginx/ssl/key.pem -out nginx/ssl/cert.pem
+```
+
+#### 3. Docker Compose 실행
+```bash
+# 서비스 시작
+docker-compose up -d
+
+# 로그 확인
+docker-compose logs -f
+```
+
+#### 4. 배포 확인
+- HTTPS를 통해 서비스 접속 확인
+- Swagger UI: https://[도메인]/swagger-ui.html
+
+### 보안 및 성능 최적화
+- HTTPS 리다이렉션 설정
+- 최신 TLS 프로토콜 사용
+- 안전한 암호화 알고리즘 적용
+- 데이터베이스 커넥션 풀 최적화
+- 주기적인 인증서 갱신 자동화
+
+### 모니터링 및 유지보수
+```bash
+# 컨테이너 상태 확인
+docker-compose ps
+
+# 서비스 재시작
+docker-compose restart [서비스명]
+
+# 로그 확인
+docker-compose logs -f [서비스명]
+
+# 설정 변경 후 적용
+docker-compose up -d --no-deps [서비스명]
+```
+
+### 확장성
+- 수평적 확장을 위해 필요시 로드 밸런서 추가 가능
+- 데이터베이스 복제 구성 가능
+- 컨테이너 오케스트레이션 도구(Kubernetes 등)로 마이그레이션 가능
+
+## 🧪 테스트
+
+테스트 실행 방법:
 ```bash
 ./gradlew test
 ```
 
-## 라이센스
-이 프로젝트는 MIT 라이센스 하에 배포됩니다. 
+## 🔧 알려진 이슈 및 해결 방법
+
+- **배경색상 Enum 처리**: Enum 타입 'BEIGE', 'BLUE', 'GREEN', 'PURPLE'과 정수 값 사이의 비교에서 타입 변환 문제 발생 가능
+- **해결 방법**: 배경색상 필드 타입을 일관되게 유지하고, Enum <-> Integer 변환 시 적절한 컨버터 사용
+
+## 📚 참고 자료 및 링크
+
+- [Spring Boot 공식 문서](https://spring.io/projects/spring-boot)
+- [Spring Data JPA 문서](https://spring.io/projects/spring-data-jpa)
+- [MariaDB 문서](https://mariadb.org/documentation/)
+- [Swagger OpenAPI 문서](https://swagger.io/docs/specification/about/)
