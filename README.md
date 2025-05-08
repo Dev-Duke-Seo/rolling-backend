@@ -2,7 +2,14 @@
 
 > 사용자들이 메시지와 감정을 공유할 수 있는 디지털 롤링페이퍼 플랫폼의 백엔드 시스템
 
-![Rolling 서비스 이미지](https://via.placeholder.com/800x400?text=Rolling+Backend+Service)
+## 롤링 서버 구경하기
+
+### 프로덕트(프론트서버)
+> https://rolling-production.vercel.app
+
+### 롤링 API 문서(swagger)
+> https://15.165.187.153.nip.io/swagger-ui/index.html
+
 
 ## 📝 프로젝트 소개
 
@@ -298,10 +305,3 @@ docker-compose up -d --no-deps [서비스명]
 
 - **배경색상 Enum 처리**: Enum 타입 'BEIGE', 'BLUE', 'GREEN', 'PURPLE'과 정수 값 사이의 비교에서 타입 변환 문제 발생 가능
 - **해결 방법**: 배경색상 필드 타입을 일관되게 유지하고, Enum <-> Integer 변환 시 적절한 컨버터 사용
-
-## 📚 참고 자료 및 링크
-
-- [Spring Boot 공식 문서](https://spring.io/projects/spring-boot)
-- [Spring Data JPA 문서](https://spring.io/projects/spring-data-jpa)
-- [MariaDB 문서](https://mariadb.org/documentation/)
-- [Swagger OpenAPI 문서](https://swagger.io/docs/specification/about/)
