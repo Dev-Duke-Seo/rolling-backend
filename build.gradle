@@ -5,7 +5,7 @@ plugins {
 	id 'org.asciidoctor.jvm.convert' version '3.3.2'
 }
 
-group = 'com.rolling'
+group = 'com.duke'
 version = '0.0.1-SNAPSHOT'
 
 java {
@@ -70,8 +70,8 @@ dependencies {
 
 	// Hibernate Micrometer
 	implementation 'org.hibernate.orm:hibernate-micrometer:6.4.4.Final'
-	// P6Spy
-	implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.9.0'
+	// P6Spy - 직접 라이브러리 사용 (FlexyPool 의존성 없음)
+	implementation 'p6spy:p6spy:3.9.1'
 
 	runtimeOnly 'io.micrometer:micrometer-registry-prometheus'
 
