@@ -1,31 +1,41 @@
-# 🎁 Rolling - 온라인 롤링페이퍼 백엔드 서비스
+# 🎯 Duke Backend - 통합 백엔드 서비스
 
-> 사용자들이 메시지와 감정을 공유할 수 있는 디지털 롤링페이퍼 플랫폼의 백엔드 시스템
+> Rolling 롤링페이퍼와 BLOB 소셜 미디어 서비스를 통합 제공하는 백엔드 시스템
 
-## 롤링 서버 구경하기
+## 🌐 서비스 구경하기
 
-### 프로덕트(프론트서버)
+### Rolling 프로덕트(프론트서버)
 > https://rolling-production.vercel.app
 
-### 롤링 API 문서(swagger)
+### API 문서(Swagger)
 > https://15.165.187.153.nip.io/swagger-ui/index.html
+> - Rolling API: `/recipients`, `/messages`, `/reactions`
+> - BLOB API: `/blob/users`, `/blob/posts`
 
 
 ## 📝 프로젝트 소개
 
-Rolling은 사용자들이 온라인에서 손쉽게 롤링페이퍼를 만들고 공유할 수 있는 서비스입니다. 전통적인 종이 롤링페이퍼의 따뜻함과 정성을 디지털 환경에서도 느낄 수 있도록 설계되었습니다.
+Duke Backend는 온라인 롤링페이퍼 서비스를 위한 백엔드 API 서버입니다.
+
+사용자들이 온라인에서 손쉽게 롤링페이퍼를 만들고 공유할 수 있는 디지털 플랫폼의 백엔드 시스템입니다. 전통적인 종이 롤링페이퍼의 따뜻함과 정성을 디지털 환경에서도 느낄 수 있도록 설계되었습니다.
 
 ### 주요 기능
 - 개인화된 롤링페이퍼 생성 및 관리
 - 다양한 배경색상 옵션 (BEIGE, BLUE, GREEN, PURPLE)
 - 메시지 작성 및 조회 기능
+- 반응(이모지) 시스템
 - RESTful API 제공으로 프론트엔드와 원활한 연동
-- 글로벌 예외 처리 시스템
+- 통일된 응답 처리 시스템 (ServiceResult 패턴)
+- 글로벌 예외 처리
+- Swagger를 통한 API 문서화
+
+### 내부 서비스 구조
+Duke Backend는 내부적으로 BLOB 소셜 미디어 서비스도 포함하고 있으나, 현재는 Rolling 서비스가 주요 서비스로 운영되고 있습니다.
 
 ## 🛠️ 기술 스택
 
 ![Java](https://img.shields.io/badge/Java-17-orange?style=flat-square&logo=java)
-![Spring Boot](https://img.shields.io/badge/Spring_Boot-3.4.4-green?style=flat-square&logo=spring-boot)
+![Spring Boot](https://img.shields.io/badge/Spring_Boot-3.2.3-green?style=flat-square&logo=spring-boot)
 ![Spring Data JPA](https://img.shields.io/badge/Spring_Data_JPA-latest-green?style=flat-square&logo=spring)
 ![MariaDB](https://img.shields.io/badge/MariaDB-latest-blue?style=flat-square&logo=mariadb)
 ![Gradle](https://img.shields.io/badge/Gradle-8.13-blue?style=flat-square&logo=gradle)
@@ -43,12 +53,12 @@ Rolling은 사용자들이 온라인에서 손쉽게 롤링페이퍼를 만들�
 1. 저장소 클론
 ```bash
 git clone <repository-url>
-cd rolling
+cd duke-backend
 ```
 
 2. 환경 변수 설정
 ```bash
-export DB_URL=jdbc:mariadb://localhost:3306/rolling_db
+export DB_URL=jdbc:mariadb://localhost:3306/duke_db
 export DB_USERNAME=root
 export DB_PASSWORD=yourpassword
 ```
@@ -73,10 +83,15 @@ export DB_PASSWORD=yourpassword
 ### 데이터 모델
 1. **Recipients** - 롤링페이퍼 수신자 정보
    - 배경색상 옵션: BEIGE, BLUE, GREEN, PURPLE
-
 2. **Message** - 작성된 메시지 정보
+3. **Reaction** - 메시지 반응(이모지) 정보
 
-3. **User** - 사용자 정보
+### API 엔드포인트
+- `GET/POST /recipients` - 롤링페이퍼 관리
+- `GET/POST /recipients/{id}/messages` - 메시지 관리
+- `POST /recipients/{id}/reactions` - 반응 추가
+- `GET /health` - 서버 상태 확인
+- `GET /actuator/prometheus` - 모니터링 메트릭
 
 ### API 문서
 - Swagger UI: http://localhost:8080/swagger-ui.html
@@ -84,27 +99,53 @@ export DB_PASSWORD=yourpassword
 
 ### 예외 처리
 - **404 Not Found**: 리소스를 찾을 수 없는 경우
+- **400 Bad Request**: 잘못된 요청 데이터
 - **500 Internal Server Error**: 서버 내부 오류 발생 시
 
 ## 🏗️ 프로젝트 구조 및 아키텍처
+
+### 레이어드 아키텍처
 ```
-rolling/
+Controller → Service (Interface) → ServiceImpl → Repository → Entity
+    ↓            ↓                      ↓             ↓           ↓
+   DTO    ServiceResult         비즈니스 로직    JPA Query    DB Table
+```
+
+### 프로젝트 구조
+```
+duke-backend/
 ├── src/
 │   ├── main/
 │   │   ├── java/
-│   │   │   └── com/
-│   │   │       └── rolling/
-│   │   │           ├── config/      # 설정 클래스
-│   │   │           ├── controller/  # API 컨트롤러
-│   │   │           ├── model/       # 데이터 모델
-│   │   │           ├── repository/  # 데이터 액세스 계층
-│   │   │           ├── service/     # 비즈니스 로직
-│   │   │           └── exception/   # 예외 처리
+│   │   │   ├── com/common/          # 공통 컴포넌트
+│   │   │   │   ├── config/          # 공통 설정 (CORS, JPA 네이밍)
+│   │   │   │   ├── dto/             # 공통 DTO (ServiceResult, PageResponseDto)
+│   │   │   │   ├── exception/       # 공통 예외 처리
+│   │   │   │   └── util/            # 공통 유틸리티
+│   │   │   ├── com/rolling/         # Rolling 롤링페이퍼 서비스
+│   │   │   │   ├── DukeApplication.java     # 메인 애플리케이션
+│   │   │   │   ├── config/          # Rolling 전용 설정
+│   │   │   │   ├── controller/      # Rolling API
+│   │   │   │   ├── service/         # Rolling 비즈니스 로직
+│   │   │   │   ├── repository/      # Rolling 데이터 액세스
+│   │   │   │   └── model/           # Rolling 데이터 모델
+│   │   │   └── com/blob/            # BLOB 소셜 미디어 서비스
+│   │   │       ├── config/          # BLOB 전용 설정
+│   │   │       ├── controller/      # BLOB API
+│   │   │       ├── service/         # BLOB 비즈니스 로직
+│   │   │       ├── repository/      # BLOB 데이터 액세스
+│   │   │       ├── entity/          # BLOB 엔티티
+│   │   │       ├── dto/             # BLOB DTO
+│   │   │       ├── security/        # BLOB 보안 (TODO)
+│   │   │       └── exception/       # BLOB 예외 처리 (TODO)
 │   │   └── resources/
 │   │       ├── application.properties      # 기본 설정
 │   │       ├── application-prod.properties # 운영 환경 설정
 │   │       └── data.sql                    # 초기 데이터
 │   └── test/        # 테스트 코드
+├── docs/            # 프로젝트 문서
+│   ├── CLAUDE.md    # 개발 가이드
+│   └── folder-tree.md # 폴더 구조
 ├── gradle/          # Gradle 래퍼
 ├── build.gradle     # Gradle 빌드 스크립트
 └── settings.gradle  # Gradle 설정
@@ -212,7 +253,7 @@ RUN ./gradlew build -x test
 # 실행 스테이지
 FROM openjdk:17-slim
 WORKDIR /app
-COPY --from=build /app/build/libs/rolling-0.0.1-SNAPSHOT.jar app.jar
+COPY --from=build /app/build/libs/duke-backend-0.0.1-SNAPSHOT.jar app.jar
 EXPOSE 8080
 ENTRYPOINT ["java", "-jar", "app.jar"]
 ```
