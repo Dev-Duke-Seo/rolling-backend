@@ -63,6 +63,7 @@ public class PostController {
             @Parameter(description = "카테고리") @RequestParam(required = false) String categories,
             @Parameter(description = "시작 날짜") @RequestParam(required = false) String startDate,
             @Parameter(description = "종료 날짜") @RequestParam(required = false) String endDate,
+
             @Parameter(description = "이미지 포함 여부") @RequestParam(
                     defaultValue = "false") boolean hasImage,
             @Parameter(description = "위치 정보 포함 여부") @RequestParam(
