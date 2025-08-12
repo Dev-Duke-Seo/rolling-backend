@@ -15,7 +15,7 @@ import com.blob.dto.response.*;
 import com.blob.service.BlobUserService;
 
 @RestController
-@RequestMapping("/api/blob/users")
+@RequestMapping("/blob/users")
 @RequiredArgsConstructor
 @Tag(name = "BLOB User", description = "BLOB 사용자 관련 API")
 public class BlobUserController {

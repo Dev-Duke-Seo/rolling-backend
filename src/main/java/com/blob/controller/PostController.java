@@ -16,7 +16,7 @@ import com.blob.service.PostService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/blob/posts")
+@RequestMapping("/blob/posts")
 @RequiredArgsConstructor
 @Tag(name = "BLOB Post", description = "BLOB 게시물 관련 API")
 public class PostController {
