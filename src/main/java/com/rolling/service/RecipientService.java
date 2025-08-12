@@ -1,7 +1,7 @@
 package com.rolling.service;
 
-import com.rolling.model.ServiceResult;
-import com.rolling.model.dto.PageResponseDto;
+import com.common.dto.ServiceResult;
+import com.common.dto.PageResponseDto;
 import com.rolling.model.dto.Recipient.RecipientCreateDto;
 import com.rolling.model.dto.Recipient.RecipientDto;
 

@@ -27,11 +27,11 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.rolling.exception.ServiceError;
-import com.rolling.model.ServiceResult;
+import com.common.exception.ServiceError;
+import com.common.dto.ServiceResult;
 import com.rolling.model.dto.MessageDto;
 import com.rolling.model.dto.MessagePreviewDto;
-import com.rolling.model.dto.PageResponseDto;
+import com.common.dto.PageResponseDto;
 import com.rolling.model.dto.ReactionCreateDto;
 import com.rolling.model.dto.ReactionDto;
 import com.rolling.model.dto.ReactionPreviewDto;

@@ -6,7 +6,7 @@ import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
-import com.rolling.model.ServiceResult;
+import com.common.dto.ServiceResult;
 import com.rolling.service.PublicService;
 
 import java.util.Arrays;

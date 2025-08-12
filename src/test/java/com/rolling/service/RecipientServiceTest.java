@@ -27,8 +27,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 
-import com.rolling.model.ServiceResult;
-import com.rolling.model.dto.PageResponseDto;
+import com.common.dto.ServiceResult;
+import com.common.dto.PageResponseDto;
 import com.rolling.model.dto.Recipient.RecipientCreateDto;
 import com.rolling.model.dto.Recipient.RecipientDto;
 import com.rolling.model.entity.Recipient;

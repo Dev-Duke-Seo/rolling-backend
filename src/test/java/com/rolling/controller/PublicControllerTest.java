@@ -18,7 +18,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 
-import com.rolling.model.ServiceResult;
+import com.common.dto.ServiceResult;
 import com.rolling.service.PublicService;
 
 @WebMvcTest(PublicController.class)

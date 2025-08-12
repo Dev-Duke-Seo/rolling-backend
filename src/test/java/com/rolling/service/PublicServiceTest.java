@@ -12,7 +12,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.rolling.model.ServiceResult;
+import com.common.dto.ServiceResult;
 import com.rolling.service.impl.PublicServiceImpl;
 
 @ExtendWith(MockitoExtension.class)

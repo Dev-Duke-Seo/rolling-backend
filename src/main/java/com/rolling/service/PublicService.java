@@ -1,6 +1,6 @@
 package com.rolling.service;
 
-import com.rolling.model.ServiceResult;
+import com.common.dto.ServiceResult;
 
 public interface PublicService {
 

@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.rolling.model.ServiceResult;
+import com.common.dto.ServiceResult;
 import com.rolling.service.PublicService;
 
 import lombok.RequiredArgsConstructor;

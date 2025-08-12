@@ -25,9 +25,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
-import com.rolling.model.ServiceResult;
+import com.common.dto.ServiceResult;
 import com.rolling.model.dto.MessageDto;
-import com.rolling.model.dto.PageResponseDto;
+import com.common.dto.PageResponseDto;
 import com.rolling.model.entity.Message;
 import com.rolling.model.entity.Recipient;
 import com.rolling.model.enums.ColorType;
