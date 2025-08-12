@@ -35,9 +35,16 @@ public class SwaggerConfig {
         }
 
         @Bean
+        public GroupedOpenApi blobApi() {
+                return GroupedOpenApi.builder().group("blob-api")
+                                .pathsToMatch("/blob/**")
+                                .packagesToScan("com.blob.controller").build();
+        }
+
+        @Bean
         public GroupedOpenApi allApis() {
                 return GroupedOpenApi.builder().group("all-apis").pathsToMatch("/**")
-                                .packagesToScan("com.rolling.controller").build();
+                                .packagesToScan("com.rolling.controller", "com.blob.controller").build();
         }
 
         @Bean
@@ -53,10 +60,12 @@ public class SwaggerConfig {
                 // 태그 정의 추가
                 List<Tag> tags = Arrays.asList(
                                 createTag("Recipient", "메시지를 수신할 주체(recipient)를 위한 API"),
-                                createTag("Public", "공개 API"));
+                                createTag("Public", "공개 API"),
+                                createTag("BLOB User", "BLOB 사용자 관련 API"),
+                                createTag("BLOB Post", "BLOB 게시물 관련 API"));
 
-                return new OpenAPI().info(new Info().title("Rolling API 문서").version("v1.0.0")
-                                .description("Rolling 프로젝트의 API 문서입니다.")
+                return new OpenAPI().info(new Info().title("Duke Backend API 문서").version("v1.0.0")
+                                .description("Duke Backend (Rolling & BLOB) 프로젝트의 API 문서입니다.")
                                 .contact(new Contact().name("Rolling Project")
                                                 .email("dev.duke.seo@gmail.com")
                                                 .url("https://rolling-production.vercel.app/"))
