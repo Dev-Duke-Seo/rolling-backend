@@ -99,4 +99,16 @@ public class BlobUserController {
                 blobUserService.getUserBookmarks(blobId, page, size);
         return ResponseEntity.status(response.getStatus()).body(response);
     }
+
+    @Operation(summary = "댓글 단 게시글 목록", description = "사용자가 댓글을 단 게시글 목록을 조회합니다")
+    @GetMapping("/{blobId}/commented")
+    public ResponseEntity<BlobApiResponse<BlobPagedResponse<CommentDetailResponse>>> getUserCommentedPosts(
+            @PathVariable String blobId,
+            @Parameter(description = "페이지 번호") @RequestParam(defaultValue = "0") int page,
+            @Parameter(description = "페이지 크기") @RequestParam(defaultValue = "10") int size) {
+
+        BlobApiResponse<BlobPagedResponse<CommentDetailResponse>> response =
+                blobUserService.getUserCommentedPosts(blobId, page, size);
+        return ResponseEntity.status(response.getStatus()).body(response);
+    }
 }

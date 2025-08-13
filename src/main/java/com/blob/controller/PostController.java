@@ -16,7 +16,7 @@ import com.blob.service.PostService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/blob/posts")
+@RequestMapping("/blob/post")
 @RequiredArgsConstructor
 @Tag(name = "BLOB Post", description = "BLOB 게시물 관련 API")
 public class PostController {
@@ -110,6 +110,24 @@ public class PostController {
 
         Long userId = Long.parseLong(authentication.getName());
         BlobApiResponse<BookmarkResponse> response = postService.toggleBookmark(userId, postId);
+        return ResponseEntity.status(response.getStatus()).body(response);
+    }
+
+    @Operation(summary = "지도 사이드바 게시글", description = "지도 사이드바용 게시글 목록을 조회합니다")
+    @GetMapping("/map-sidebar")
+    public ResponseEntity<BlobApiResponse<BlobPagedResponse<MarkerDataResponse>>> getMapSidebarPosts(
+            @Parameter(description = "카테고리") @RequestParam(required = false) String categories,
+            @Parameter(description = "최소 위도") @RequestParam double minLat,
+            @Parameter(description = "최대 위도") @RequestParam double maxLat,
+            @Parameter(description = "최소 경도") @RequestParam double minLng,
+            @Parameter(description = "최대 경도") @RequestParam double maxLng,
+            @Parameter(description = "페이지 번호") @RequestParam(defaultValue = "0") int page,
+            @Parameter(description = "페이지 크기") @RequestParam(defaultValue = "10") int size,
+            @Parameter(description = "정렬 기준") @RequestParam(
+                    defaultValue = "recent") String sortBy) {
+
+        BlobApiResponse<BlobPagedResponse<MarkerDataResponse>> response = postService
+                .getMapSidebarPosts(categories, minLat, maxLat, minLng, maxLng, page, size, sortBy);
         return ResponseEntity.status(response.getStatus()).body(response);
     }
 
