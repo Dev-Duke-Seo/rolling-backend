@@ -14,6 +14,7 @@ import com.blob.entity.Comment;
 public class CommentDetailResponse {
 
     private Long commentId;
+    private Long postId;
     private BlobUserResponse author;
     private String content;
     private Integer likeCount;
@@ -22,6 +23,7 @@ public class CommentDetailResponse {
 
     public static CommentDetailResponse from(Comment comment) {
         return CommentDetailResponse.builder().commentId(comment.getCommentId())
+                .postId(comment.getPost().getPostId())
                 .author(BlobUserResponse.from(comment.getUser())).content(comment.getContent())
                 .likeCount(comment.getLikeCount()).createdAt(comment.getCreatedAt())
                 .updatedAt(comment.getUpdatedAt()).build();

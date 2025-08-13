@@ -13,7 +13,6 @@ import com.blob.dto.response.*;
 import com.blob.entity.*;
 import com.blob.repository.*;
 import com.blob.service.PostService;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -117,6 +116,7 @@ public class PostServiceImpl implements PostService {
             double maxLat, double minLng, double maxLng) {
 
         List<Post> posts = postRepository.findActivePostsInArea(minLat, maxLat, minLng, maxLng);
+        System.out.println("posts: " + posts);
         List<MarkerDataResponse> markers =
                 posts.stream().map(MarkerDataResponse::from).collect(Collectors.toList());
 
@@ -205,5 +205,21 @@ public class PostServiceImpl implements PostService {
         reportRepository.save(report);
 
         return BlobApiResponse.success(null);
+    }
+
+    @Override
+    public BlobApiResponse<BlobPagedResponse<MarkerDataResponse>> getMapSidebarPosts(
+            String categories, double minLat, double maxLat, double minLng, double maxLng, int page,
+            int size, String sortBy) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Post> postPage;
+
+        if (categories != null && !categories.trim().isEmpty()) {
+            postPage = postRepository.findActivePostsByCategory(categories, pageable);
+        } else {
+            postPage = postRepository.findAllActivePosts(pageable);
+        }
+        return BlobApiResponse
+                .success(BlobPagedResponse.from(postPage.map(MarkerDataResponse::from)));
     }
 }

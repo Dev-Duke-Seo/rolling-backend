@@ -7,6 +7,7 @@ import com.blob.dto.response.BlobApiResponse;
 import com.blob.dto.response.BlobPagedResponse;
 import com.blob.dto.response.BlobUserResponse;
 import com.blob.dto.response.PostSummaryResponse;
+import com.blob.dto.response.CommentDetailResponse;
 
 public interface BlobUserService {
 
@@ -28,4 +29,6 @@ public interface BlobUserService {
 
     BlobApiResponse<BlobPagedResponse<PostSummaryResponse>> getUserBookmarks(String blobId,
             int page, int size);
+    
+    BlobApiResponse<BlobPagedResponse<CommentDetailResponse>> getUserCommentedPosts(String blobId, int page, int size);
 }

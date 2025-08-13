@@ -12,9 +12,11 @@ import com.blob.dto.request.UpdateProfileRequest;
 import com.blob.dto.response.*;
 import com.blob.entity.BlobUser;
 import com.blob.entity.Bookmark;
+import com.blob.entity.Comment;
 import com.blob.entity.Post;
 import com.blob.repository.BlobUserRepository;
 import com.blob.repository.BookmarkRepository;
+import com.blob.repository.CommentRepository;
 import com.blob.repository.PostRepository;
 import com.blob.service.BlobUserService;
 
@@ -26,6 +28,7 @@ public class BlobUserServiceImpl implements BlobUserService {
     private final BlobUserRepository blobUserRepository;
     private final PostRepository postRepository;
     private final BookmarkRepository bookmarkRepository;
+    private final CommentRepository commentRepository;
 
     @Override
     public BlobApiResponse<BlobUserResponse> createUser(CreateBlobUserRequest request) {
@@ -147,6 +150,25 @@ public class BlobUserServiceImpl implements BlobUserService {
         Page<PostSummaryResponse> responsePage =
                 bookmarkPage.map(bookmark -> PostSummaryResponse.from(bookmark.getPost()));
         BlobPagedResponse<PostSummaryResponse> pagedResponse = BlobPagedResponse.from(responsePage);
+
+        return BlobApiResponse.success(pagedResponse);
+    }
+
+    @Override
+    public BlobApiResponse<BlobPagedResponse<CommentDetailResponse>> getUserCommentedPosts(
+            String blobId, int page, int size) {
+        BlobUser user = blobUserRepository.findActiveUserByBlobId(blobId).orElse(null);
+
+        if (user == null) {
+            return BlobApiResponse.error(404, "사용자를 찾을 수 없습니다", "USER_001");
+        }
+
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Comment> commentPage = commentRepository.findByUser(user, pageable);
+
+        Page<CommentDetailResponse> responsePage = commentPage.map(CommentDetailResponse::from);
+        BlobPagedResponse<CommentDetailResponse> pagedResponse =
+                BlobPagedResponse.from(responsePage);
 
         return BlobApiResponse.success(pagedResponse);
     }

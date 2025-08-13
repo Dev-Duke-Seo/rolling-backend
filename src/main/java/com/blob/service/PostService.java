@@ -23,6 +23,10 @@ public interface PostService {
         BlobApiResponse<List<MarkerDataResponse>> getMarkers(String categories, double minLat,
                         double maxLat, double minLng, double maxLng);
 
+        BlobApiResponse<BlobPagedResponse<MarkerDataResponse>> getMapSidebarPosts(String categories, 
+                        double minLat, double maxLat, double minLng, double maxLng, 
+                        int page, int size, String sortBy);
+
         BlobApiResponse<LikeResponse> togglePostLike(Long userId, Long postId);
 
         BlobApiResponse<BookmarkResponse> toggleBookmark(Long userId, Long postId);
