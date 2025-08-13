@@ -30,8 +30,9 @@ public interface PostRepository extends JpaRepository<Post, Long> {
                      + "(p.title LIKE %:keyword% OR p.content LIKE %:keyword%) ORDER BY p.createdAt DESC")
        Page<Post> findActivePostsByKeyword(@Param("keyword") String keyword, Pageable pageable);
 
-       @Query("SELECT p FROM Post p WHERE p.isDeleted = false AND "
-                     + "p.latitude BETWEEN :minLat AND :maxLat AND "
+       // TODO 활성화된 마커만 가져와야함
+       // @Query("SELECT p FROM Post p WHERE p.isDeleted = false AND "
+       @Query("SELECT p FROM Post p WHERE " + "p.latitude BETWEEN :minLat AND :maxLat AND "
                      + "p.longitude BETWEEN :minLng AND :maxLng")
        List<Post> findActivePostsInArea(@Param("minLat") Double minLat,
                      @Param("maxLat") Double maxLat, @Param("minLng") Double minLng,

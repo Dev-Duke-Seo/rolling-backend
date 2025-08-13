@@ -10,16 +10,16 @@ import java.util.Optional;
 @Repository
 public interface LikeRepository extends JpaRepository<Like, Long> {
 
-    Optional<Like> findByUserUserIdAndTargetTypeAndTargetId(Long userId,
-            Like.LikeTargetType targetType, Long targetId);
+        Optional<Like> findByUserUserIdAndTargetTypeAndTargetId(Long userId,
+                        Like.LikeTargetType targetType, Long targetId);
 
-    boolean existsByUserUserIdAndTargetTypeAndTargetId(Long userId, Like.LikeTargetType targetType,
-            Long targetId);
+        boolean existsByUserUserIdAndTargetTypeAndTargetId(Long userId,
+                        Like.LikeTargetType targetType, Long targetId);
 
-    @Query("SELECT COUNT(l) FROM Like l WHERE l.targetType = :targetType AND l.targetId = :targetId")
-    Long countByTargetTypeAndTargetId(@Param("targetType") Like.LikeTargetType targetType,
-            @Param("targetId") Long targetId);
+        @Query("SELECT COUNT(l) FROM Like l WHERE l.targetType = :targetType AND l.targetId = :targetId")
+        Long countByTargetTypeAndTargetId(@Param("targetType") Like.LikeTargetType targetType,
+                        @Param("targetId") Long targetId);
 
-    void deleteByUserUserIdAndTargetTypeAndTargetId(Long userId, Like.LikeTargetType targetType,
-            Long targetId);
+        void deleteByUserUserIdAndTargetTypeAndTargetId(Long userId, Like.LikeTargetType targetType,
+                        Long targetId);
 }

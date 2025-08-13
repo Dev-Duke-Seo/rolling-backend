@@ -50,6 +50,42 @@ public class BlobUser {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
+    @Column(length = 500)
+    private String bio;
+
+    @Column(nullable = false, length = 20)
+    @Builder.Default
+    private String state = "INCOMPLETE";
+
+    @Column(name = "is_public")
+    @Builder.Default
+    private Boolean isPublic = true;
+
+    @Column(name = "coordinate_lat", columnDefinition = "DECIMAL(10,8)")
+    private Double coordinateLat;
+
+    @Column(name = "coordinate_lng", columnDefinition = "DECIMAL(11,8)")
+    private Double coordinateLng;
+
+    @Column(name = "oauth_type", length = 20)
+    private String oauthType;
+
+    @Column(nullable = false, length = 20)
+    @Builder.Default
+    private String role = "ROLE_USER";
+
+    @Column(name = "post_count")
+    @Builder.Default
+    private Integer postCount = 0;
+
+    @Column(name = "liked_count")
+    @Builder.Default
+    private Integer likedCount = 0;
+
+    @Column(name = "comment_count")
+    @Builder.Default
+    private Integer commentCount = 0;
+
     @Column(name = "is_deleted")
     @Builder.Default
     private Boolean isDeleted = false;
@@ -93,5 +129,35 @@ public class BlobUser {
     @PreUpdate
     protected void onUpdate() {
         updatedAt = LocalDateTime.now();
+    }
+
+    public void incrementPostCount() {
+        this.postCount++;
+    }
+
+    public void decrementPostCount() {
+        if (this.postCount > 0) {
+            this.postCount--;
+        }
+    }
+
+    public void incrementLikedCount() {
+        this.likedCount++;
+    }
+
+    public void decrementLikedCount() {
+        if (this.likedCount > 0) {
+            this.likedCount--;
+        }
+    }
+
+    public void incrementCommentCount() {
+        this.commentCount++;
+    }
+
+    public void decrementCommentCount() {
+        if (this.commentCount > 0) {
+            this.commentCount--;
+        }
     }
 }

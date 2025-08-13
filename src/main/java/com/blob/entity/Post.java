@@ -43,6 +43,18 @@ public class Post {
     @Column(length = 50)
     private String subcategory;
 
+    @Column(length = 100)
+    private String country;
+
+    @Column(length = 100)
+    private String city;
+
+    @Column(name = "city_lat", columnDefinition = "DECIMAL(10,8)")
+    private Double cityLat;
+
+    @Column(name = "city_lng", columnDefinition = "DECIMAL(11,8)")
+    private Double cityLng;
+
     @Column(columnDefinition = "DECIMAL(10,8)")
     private Double latitude;
 
@@ -51,6 +63,15 @@ public class Post {
 
     @Column(length = 500)
     private String address;
+
+    @Column(name = "actual_lat", columnDefinition = "DECIMAL(10,8)")
+    private Double actualLat;
+
+    @Column(name = "actual_lng", columnDefinition = "DECIMAL(11,8)")
+    private Double actualLng;
+
+    @Column(name = "dist_from_actual")
+    private Double distFromActual;
 
     @Column(name = "like_count")
     @Builder.Default
@@ -69,6 +90,9 @@ public class Post {
 
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
+
+    @Column(name = "expires_at")
+    private LocalDateTime expiresAt;
 
     @Column(name = "is_deleted")
     @Builder.Default

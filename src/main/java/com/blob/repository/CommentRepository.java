@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import com.blob.entity.BlobUser;
 import com.blob.entity.Comment;
 import java.util.Optional;
 
@@ -30,4 +31,11 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
 
     @Query("SELECT COUNT(c) FROM Comment c WHERE c.isDeleted = false AND c.parentComment.commentId = :parentCommentId")
     Long countActiveRepliesByParentId(@Param("parentCommentId") Long parentCommentId);
+
+    Page<Comment> findByUser(BlobUser user, Pageable pageable);
+
+    Page<Comment> findByParentCommentCommentIdAndIsDeletedFalse(Long commentId, Pageable pageable);
+
+    Page<Comment> findByPostPostIdAndParentCommentIsNullAndIsDeletedFalse(Long postId,
+            Pageable pageable);
 }
