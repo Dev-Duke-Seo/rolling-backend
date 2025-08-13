@@ -50,3 +50,13 @@ Jenkinsfile
 .github/workflows/ci-cd.yml
 nginx/conf/default.conf
 scripts/deploy.sh
+
+.cursor/rules/readme-for-resume.mdc
+.cursor/rules/toss-frontend-rule.mdc
+CLAUDE.md
+docker-compose-dev.yml
+docs/folder-tree.md
+docs/folder-tree.md.bak
+docs/SPRING_SERVER_DESIGN.md
+src/main/java/com/rolling/duke-backend.code-workspace
+src/main/java/com/rolling/rolling-backend.code-workspace
