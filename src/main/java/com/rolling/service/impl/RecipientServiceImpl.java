@@ -54,7 +54,6 @@ public class RecipientServiceImpl implements RecipientService {
         public ServiceResult<RecipientDto> getRecipientById(Long id) {
                 Recipient recipient = recipientRepository.findById(id)
                                 .orElseThrow(() -> ServiceError.recipientNotFound(id));
-                System.out.println("recipient: " + recipient);
 
                 return ServiceResult.success("Recipient found successfully", toDto(recipient),
                                 HttpStatus.OK);
@@ -62,16 +61,18 @@ public class RecipientServiceImpl implements RecipientService {
 
         @Override
         @Transactional(readOnly = true)
-        public ServiceResult<PageResponseDto<RecipientDto>> getAllRecipients(int limit,
-                        int offset, String sort) {
+        public ServiceResult<PageResponseDto<RecipientDto>> getAllRecipients(int limit, int offset,
+                        String sort) {
 
                 Pageable pageable = PageRequest.of(offset / limit, limit);
                 Page<Recipient> recipientsPage;
 
                 if (sort.equals("popular")) {
-                        recipientsPage = recipientRepository.findAllByOrderByMessageCountDesc(pageable);
+                        recipientsPage = recipientRepository
+                                        .findAllByOrderByMessageCountDesc(pageable);
                 } else {
-                        recipientsPage = recipientRepository.findAllByOrderByCreatedAtDesc(pageable);
+                        recipientsPage = recipientRepository
+                                        .findAllByOrderByCreatedAtDesc(pageable);
                 }
 
                 if (recipientsPage.isEmpty()) {
@@ -125,9 +126,9 @@ public class RecipientServiceImpl implements RecipientService {
                 List<Reaction> topReactions = recipient.getReactions().stream()
                                 .sorted(Comparator.comparing(Reaction::getCount).reversed())
                                 .limit(3).collect(Collectors.toList());
-                List<ReactionPreviewDto> reactionPreviewDtos = topReactions.stream()
-                                .map(this::convertToReactionPreviewDto)
-                                .collect(Collectors.toList());
+                List<ReactionPreviewDto> reactionPreviewDtos =
+                                topReactions.stream().map(this::convertToReactionPreviewDto)
+                                                .collect(Collectors.toList());
 
                 return RecipientDto.builder().id(recipient.getId()).name(recipient.getName())
                                 .backgroundColor(recipient.getBackgroundColor())
