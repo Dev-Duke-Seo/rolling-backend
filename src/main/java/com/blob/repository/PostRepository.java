@@ -17,17 +17,17 @@ public interface PostRepository extends JpaRepository<Post, Long> {
        @Query("SELECT p FROM Post p WHERE p.isDeleted = false AND p.postId = :postId")
        Optional<Post> findActivePostById(@Param("postId") Long postId);
 
-       @Query("SELECT p FROM Post p WHERE p.isDeleted = false ORDER BY p.createdAt DESC")
+       @Query("SELECT p FROM Post p WHERE p.isDeleted = false ORDER BY p.createdDate DESC")
        Page<Post> findAllActivePosts(Pageable pageable);
 
-       @Query("SELECT p FROM Post p WHERE p.isDeleted = false AND p.user.userId = :userId ORDER BY p.createdAt DESC")
+       @Query("SELECT p FROM Post p WHERE p.isDeleted = false AND p.user.userId = :userId ORDER BY p.createdDate DESC")
        Page<Post> findActivePostsByUserId(@Param("userId") Long userId, Pageable pageable);
 
-       @Query("SELECT p FROM Post p WHERE p.isDeleted = false AND p.category = :category ORDER BY p.createdAt DESC")
+       @Query("SELECT p FROM Post p WHERE p.isDeleted = false AND p.category = :category ORDER BY p.createdDate DESC")
        Page<Post> findActivePostsByCategory(@Param("category") String category, Pageable pageable);
 
        @Query("SELECT p FROM Post p WHERE p.isDeleted = false AND "
-                     + "(p.title LIKE %:keyword% OR p.content LIKE %:keyword%) ORDER BY p.createdAt DESC")
+                     + "(p.title LIKE %:keyword% OR p.content LIKE %:keyword%) ORDER BY p.createdDate DESC")
        Page<Post> findActivePostsByKeyword(@Param("keyword") String keyword, Pageable pageable);
 
        // TODO 활성화된 마커만 가져와야함
@@ -42,14 +42,14 @@ public interface PostRepository extends JpaRepository<Post, Long> {
        Page<Post> findActivePostsByMinLikes(@Param("minLikes") Integer minLikes, Pageable pageable);
 
        @Query("SELECT p FROM Post p WHERE p.isDeleted = false AND "
-                     + "p.createdAt BETWEEN :startDate AND :endDate ORDER BY p.createdAt DESC")
+                     + "p.createdDate BETWEEN :startDate AND :endDate ORDER BY p.createdDate DESC")
        Page<Post> findActivePostsByDateRange(@Param("startDate") LocalDateTime startDate,
                      @Param("endDate") LocalDateTime endDate, Pageable pageable);
 
-       @Query("SELECT p FROM Post p JOIN p.images i WHERE p.isDeleted = false GROUP BY p ORDER BY p.createdAt DESC")
+       @Query("SELECT p FROM Post p JOIN p.images i WHERE p.isDeleted = false GROUP BY p ORDER BY p.createdDate DESC")
        Page<Post> findActivePostsWithImages(Pageable pageable);
 
        @Query("SELECT p FROM Post p WHERE p.isDeleted = false AND "
-                     + "p.latitude IS NOT NULL AND p.longitude IS NOT NULL ORDER BY p.createdAt DESC")
+                     + "p.latitude IS NOT NULL AND p.longitude IS NOT NULL ORDER BY p.createdDate DESC")
        Page<Post> findActivePostsWithLocation(Pageable pageable);
 }

@@ -24,7 +24,7 @@ public class PostResponse {
     private Double longitude;
     private String address;
     private List<String> imageUrls;
-    private LocalDateTime createdAt;
+    private LocalDateTime createdDate;
 
     public static PostResponse from(Post post) {
         return PostResponse.builder().postId(post.getPostId()).title(post.getTitle())
@@ -33,6 +33,6 @@ public class PostResponse {
                 .longitude(post.getLongitude()).address(post.getAddress())
                 .imageUrls(post.getImages().stream().map(image -> image.getImageUrl())
                         .collect(Collectors.toList()))
-                .createdAt(post.getCreatedAt()).build();
+                .createdDate(post.getCreatedDate()).build();
     }
 }

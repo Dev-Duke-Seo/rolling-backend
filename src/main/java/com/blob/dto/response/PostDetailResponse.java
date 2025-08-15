@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 import com.blob.entity.Post;
@@ -54,39 +53,30 @@ public class PostDetailResponse {
     }
 
     public static PostDetailResponse from(Post post) {
-        AuthorDto author = AuthorDto.builder()
-                .userId(post.getUser().getUserId())
-                .blobId(post.getUser().getBlobId())
-                .nickname(post.getUser().getNickname())
+        AuthorDto author = AuthorDto.builder().userId(post.getUser().getUserId())
+                .blobId(post.getUser().getBlobId()).nickname(post.getUser().getNickname())
                 .profileUrl(post.getUser().getProfileImageUrl())
-                .likedCount(post.getUser().getLikedCount())
-                .build();
+                .likedCount(post.getUser().getLikedCount()).build();
 
-        return PostDetailResponse.builder()
-                .postId(post.getPostId())
-                .title(post.getTitle())
-                .content(post.getContent())
-                .category(post.getCategory())
-                .subcategory(post.getSubcategory())
-                .author(author)
-                .country(post.getCountry())
-                .city(post.getCity())
-                .cityLat(post.getCityLat())
-                .cityLng(post.getCityLng())
-                .lat(post.getLatitude())
-                .lng(post.getLongitude())
-                .address(post.getAddress())
-                .actualLat(post.getActualLat())
-                .actualLng(post.getActualLng())
-                .distFromActual(post.getDistFromActual())
-                .views(post.getViewCount())
-                .createdDate(post.getCreatedAt().toString())
+        return PostDetailResponse.builder().postId(post.getPostId()).title(post.getTitle())
+                .content(post.getContent()).category(post.getCategory())
+                .subcategory(post.getSubcategory()).author(author).country(post.getCountry())
+                .city(post.getCity()).cityLat(post.getCityLat()).cityLng(post.getCityLng())
+                .lat(post.getLatitude()).lng(post.getLongitude()).address(post.getAddress())
+                .actualLat(post.getActualLat()).actualLng(post.getActualLng())
+                .distFromActual(post.getDistFromActual()).views(post.getViewCount())
+                .createdDate(post.getCreatedDate().toString())
                 .expiresAt(post.getExpiresAt() != null ? post.getExpiresAt().toString() : null)
                 .imageUrl(post.getImages().stream().map(image -> image.getImageUrl())
                         .collect(Collectors.toList()))
-                .likeCount(post.getLikeCount())
-                .commentCount(post.getCommentCount())
-                .liked(false) // TODO: 현재 사용자 좋아요 여부 확인 로직 필요
+                .likeCount(post.getLikeCount()).commentCount(post.getCommentCount()).liked(false) // TODO:
+                                                                                                  // 현재
+                                                                                                  // 사용자
+                                                                                                  // 좋아요
+                                                                                                  // 여부
+                                                                                                  // 확인
+                                                                                                  // 로직
+                                                                                                  // 필요
                 .bookmarked(false) // TODO: 현재 사용자 북마크 여부 확인 로직 필요
                 .canDelete(false) // TODO: 삭제 권한 확인 로직 필요
                 .build();

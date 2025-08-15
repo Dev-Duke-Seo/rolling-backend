@@ -85,8 +85,8 @@ public class Post {
     @Builder.Default
     private Integer viewCount = 0;
 
-    @Column(name = "created_at")
-    private LocalDateTime createdAt;
+    @Column(name = "created_date")
+    private LocalDateTime createdDate;
 
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
@@ -119,7 +119,7 @@ public class Post {
 
     @PrePersist
     protected void onCreate() {
-        createdAt = LocalDateTime.now();
+        createdDate = LocalDateTime.now();
         updatedAt = LocalDateTime.now();
     }
 

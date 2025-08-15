@@ -1,5 +1,6 @@
 package com.blob.dto.response;
 
+import java.time.format.DateTimeFormatter;
 import com.blob.entity.Post;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,6 +21,7 @@ public class MarkerDataResponse {
     private Double lng;
     private String address;
     private String thumbnailUrl;
+    private String createdDate;
 
     public static MarkerDataResponse from(Post post) {
         return MarkerDataResponse.builder().postId(post.getPostId()).title(post.getTitle())
@@ -27,6 +29,8 @@ public class MarkerDataResponse {
                 .lat(post.getLatitude()).lng(post.getLongitude()).address(post.getAddress())
                 .thumbnailUrl(
                         post.getImages().isEmpty() ? null : post.getImages().get(0).getImageUrl())
+                .createdDate(post.getCreatedDate()
+                        .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
                 .build();
     }
 }

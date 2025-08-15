@@ -34,6 +34,6 @@ public class PostSummaryResponse {
                 .thumbnailUrl(
                         post.getImages().isEmpty() ? null : post.getImages().get(0).getImageUrl())
                 .likeCount(post.getLikeCount()).commentCount(post.getCommentCount())
-                .viewCount(post.getViewCount()).createdAt(post.getCreatedAt()).build();
+                .viewCount(post.getViewCount()).createdAt(post.getCreatedDate()).build();
     }
 }

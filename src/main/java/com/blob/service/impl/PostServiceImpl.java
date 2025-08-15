@@ -116,7 +116,6 @@ public class PostServiceImpl implements PostService {
             double maxLat, double minLng, double maxLng) {
 
         List<Post> posts = postRepository.findActivePostsInArea(minLat, maxLat, minLng, maxLng);
-        System.out.println("posts: " + posts);
         List<MarkerDataResponse> markers =
                 posts.stream().map(MarkerDataResponse::from).collect(Collectors.toList());
 
